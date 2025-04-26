@@ -2,9 +2,9 @@
     <form action="handle_login.php" method="POST" class="form-signin">
         <h2 class="form-signin-heading">Пожалуйста, войдите</h2>
         <input type="text" class="form-control" name="username" placeholder="Email адрес" required autofocus />
-      <!--  <?php /*if(!isset($errors['name'])): */?>
+
             <label style="color:red"><?php /*echo $errors['name']; */?></label>
-        --><?php /*endif; */?>
+       <?php /*endif; */?>
         <input type="password" class="form-control" name="password" placeholder="Пароль" required />
        <!-- <?php /*if(!isset($errors['name'])): */?>
             <label style="color:red"><?php /*echo $errors['password']; */?></label>

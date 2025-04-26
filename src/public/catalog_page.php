@@ -1,4 +1,5 @@
 <div class="container">
+    <a href="/profile.php"> Мой профиль </a>
     <h5>КАТАЛОГ ТОВАРОВ</h5>
     <div class="card-deck">
 
