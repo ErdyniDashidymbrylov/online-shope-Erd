@@ -128,9 +128,11 @@ if (empty($validationErrors)) {
     $stmt->execute(['email' => $email]);
     $data = $stmt->fetch();
 
-    echo "<pre>";
+/*    echo "<pre>";
     print_r($data);
-    echo "<pre>";
+    echo "<pre>";*/
+
+    require_once './login_form.php';
 
 } else {
 

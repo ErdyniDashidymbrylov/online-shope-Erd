@@ -1,18 +1,19 @@
 <div class="container">
     <a href="/profile.php"> Мой профиль </a>
-    <h5>КАТАЛОГ ТОВАРОВ</h5>
+    <h1>КАТАЛОГ ТОВАРОВ</h1>
     <div class="card-deck">
 
         <?php foreach ($products as $product):?>
 
+            <br>
             <div class="card text-center">
                 <a href="#">
                     <img class="card-img-top" src="<?php echo $product['image_url']; ?>" alt="Card image">
                     <div class="card-body">
-                        <p class="card-text text-muted"><?php echo $product['name']; ?></p>
+                        <p class="card-text text-muted"><h2 style="color:red"><?php echo $product['name']; ?></h2></p>
                         <a href="#"><h5 class="card-title"><?php echo $product['description']; ?></h5></a>
                         <div class="card-footer">
-                            <?php echo $product['price']; ?>
+                            <?php echo $product['price']. " руб."; ?>
                         </div>
                     </div>
                 </a>
@@ -23,6 +24,7 @@
         <style>
             body {
                 font-style: sans-serif;
+                background-color: #ddeefc;
             }
 
             a {
@@ -39,6 +41,7 @@
 
             .card {
                 max-width: 16rem;
+                background-color: white;
             }
 
             .card:hover {
