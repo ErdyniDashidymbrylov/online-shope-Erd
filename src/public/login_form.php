@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <form action="handle_login.php" method="POST" class="form-signin">
+    <form action="handle_login" method="POST" class="form-signin">
         <h2 class="form-signin-heading">Пожалуйста, войдите</h2>
         <input type="text" class="form-control" name="username" placeholder="Email адрес" required autofocus />
 

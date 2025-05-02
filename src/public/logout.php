@@ -2,5 +2,5 @@
 
 session_start();
 session_destroy();
-header("Location: login_form.php");
+header("Location: /login_form");
 exit();

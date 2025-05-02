@@ -3,7 +3,7 @@
 session_start();
 
 if (!isset($_SESSION['userId'])) {
-    header("Location: login.php");
+    header("Location: /login");
     exit();
 }
 
@@ -33,9 +33,9 @@ echo "<p><a href='logout.php'>Выйти</a></p>";*/
     </div>
     <h3 class="profile-name"><?php echo "Привет, " . $user['name'] . "!";?></>
     <p class="about">Вы находитесь на странице профиля</p>
-    <a href='index.php'><button class="btn">Написать письмо <?php echo $user['email']?></button></a>
-    <a href='changeprofile.php'><button class="btn">Редактировать профиль</button></a>
-    <a href='logout.php'><button class="btn">Выйти</button></a>
+    <a href=''><button class="btn">Написать письмо <?php echo $user['email']?></button></a>
+    <a href='/changeprofile'><button class="btn">Редактировать профиль</button></a>
+    <a href='/logout'><button class="btn">Выйти</button></a>
 </div>
 
 <style>

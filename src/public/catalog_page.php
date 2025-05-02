@@ -1,5 +1,6 @@
 <div class="container">
-    <a href="/profile.php"> Мой профиль </a>
+    <a href="/profile"> Мой профиль </a>
+    <a href="Add_product"> Добавить в корзину</a>
     <h1>КАТАЛОГ ТОВАРОВ</h1>
     <div class="card-deck">
 
@@ -11,7 +12,7 @@
                     <img class="card-img-top" src="<?php echo $product['image_url']; ?>" alt="Card image">
                     <div class="card-body">
                         <p class="card-text text-muted"><h2 style="color:red"><?php echo $product['name']; ?></h2></p>
-                        <a href="#"><h5 class="card-title"><?php echo $product['description']; ?></h5></a>
+                        <a href="#"><h5 class="card-title"><?php echo $product['description']. " id продукта: ". $product['id']; ?></h5></a>
                         <div class="card-footer">
                             <?php echo $product['price']. " руб."; ?>
                         </div>

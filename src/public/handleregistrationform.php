@@ -132,11 +132,11 @@ if (empty($validationErrors)) {
     print_r($data);
     echo "<pre>";*/
 
-    require_once './login_form.php';
+    require_once '/login_form';
 
 } else {
 
-require_once './registrationform.php';
+require_once '/registrationform';
 
 }
 

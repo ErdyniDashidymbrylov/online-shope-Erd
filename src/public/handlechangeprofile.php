@@ -1,10 +1,28 @@
 <?php
+global $pdo;
 session_start();
 
 if (!isset($_SESSION['userId'])) {
     header("Location: login.php");
     exit();
 }
+
+$user_id = $_SESSION['userId'];
+$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
+$stmt->execute([':user_id' => $user_id]);
+$user = $stmt->fetch();
+
+/*echo "<pre>";
+print_r($data);
+echo "</pre>";
+die;*/
+
+$oldname = $user['name'];
+$oldemail = $user['email'];
+$oldpassword = $user['password'];
+
+
 function validateRegistration(array $data) : array
 {
     $errors = [];
@@ -53,6 +71,7 @@ function validateRegistration(array $data) : array
 }
 
 
+
 $validationErrors = validateRegistration($_POST);
 
 if (empty($validationErrors))
@@ -65,17 +84,32 @@ if (empty($validationErrors))
 
     $user_id = $_SESSION['userId'];
 
-    $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
+    if ($_POST['name'] !== $user['name']) {
+            $stmtUpdateName = $pdo->prepare("UPDATE users SET name = :name WHERE id = :user_id");
+            $stmtUpdateName->execute([':name' => $_POST['name'], ':user_id' => $user_id]);
+        }
 
-    $password = password_hash($password, PASSWORD_DEFAULT);
+    if ($_POST['email'] !== $user['email']) {
+        $stmtEmailCheck = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email AND id != :user_id");
+        $stmtEmailCheck->execute([':email' => $_POST['email'], ':user_id' => $user_id]);
+        if ($stmtEmailCheck->fetchColumn() == 0) {
+            $stmtUpdateEmail = $pdo->prepare("UPDATE users SET email = :email WHERE id = :user_id");
+            $stmtUpdateEmail->execute([':email' => $_POST['email'], ':user_id' => $user_id]);
+        } else {
+            $errors['email'] = 'Этот Email уже зарегистрирован!';
+        }
+    }
 
-    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, password = :password WHERE id = :user_id");
-    $stmt->execute([':name' => $name, ':email' => $email, ':password' => $password, ':user_id' => $user_id]);
-}
 
+    if (!empty($_POST['psw']) && $_POST['psw'] === $_POST['psw-repeat']) {
+            $hashedPassword = password_hash($_POST['psw'], PASSWORD_DEFAULT);
+            $stmtUpdatePassword = $pdo->prepare("UPDATE users SET password = :password WHERE id = :user_id");
+            $stmtUpdatePassword->execute([':password' => $hashedPassword, ':user_id' => $user_id]);
+        }
 
-    header("Location: profile.php");
+        header("Location: /profile");
 
+    }
 
 
 

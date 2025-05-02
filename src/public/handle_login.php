@@ -31,7 +31,7 @@ if (empty($errors)) {
             session_start();
             $_SESSION['userId'] = $user['id'];
              // exit();
-            header("Location: /catalog.php");
+            header("Location: /catalog");
             //require_once './catalog.php';
         } else {
 
@@ -43,7 +43,7 @@ if (empty($errors)) {
 }
   else
 {
-    require_once './login_form.php';
+    require_once './login_form';
 }
 
 

@@ -13,7 +13,7 @@ $products = $stmt->fetchAll();
 print_r($products);
 echo "</pre>";*/
  else {
-     header('Location: login_form.php');
+     header('Location: /login_form');
  }
 
 

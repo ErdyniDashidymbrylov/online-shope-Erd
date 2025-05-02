@@ -93,7 +93,7 @@
     }
 </style>-->
 
-<form action="handlechangeprofile.php" method="POST">
+<form action="handlechangeprofile" method="POST">
     <div class="container">
         <h1>Редактировать профиль</h1>
         <p>Пожалуйста введите новые данные.</p>
@@ -103,25 +103,25 @@
         <?php if(isset($errors['name'])): ?>
             <label style="color:red"><?php echo $errors['name']; ?></label>
         <?php endif; ?>
-        <input type="text" placeholder="Enter Name" name="name" id="name" required>
+        <input  type="text" placeholder="" name="name" id="name"  value="<?php echo $oldname;?>">
 
         <label for="email"><b>Email</b></label>
         <?php if(isset($errors['email'])): ?>
             <label style="color:red"><?php echo $errors['email']; ?></label>
-        <?php endif; ?>
-        <input type="text" placeholder="Enter Email" name="email" id="email" required>
+       <?php endif; ?>
+        <input type="text" placeholder="" name="email" id="email" value="<?php echo $oldemail; ?>">
 
         <label for="psw"><b>Password</b></label>
         <?php if(isset($errors['psw'])): ?>
             <label style="color:red"><?php echo $errors['psw']; ?></label>
         <?php endif; ?>
-        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+        <input type="password" placeholder="Enter Password" name="psw" id="psw" >
 
         <label for="psw-repeat"><b>Repeat Password</b></label>
         <?php if(isset($errors['psw-repeat'])): ?>
             <label style="color:red"><?php echo $errors['psw-repeat']; ?></label>
         <?php endif; ?>
-        <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+        <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" >
         <hr>
 
         <button type="submit" class="registerbtn">Редактировать</button>
