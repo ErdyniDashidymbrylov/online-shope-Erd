@@ -6,11 +6,8 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 
-$user_id = $_SESSION['userId'];
-$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
-$stmt->execute([':user_id' => $user_id]);
-$user = $stmt->fetch();
+
+
 
 function validateAddProduct(array $data) : array
 {
@@ -39,7 +36,7 @@ function validateAddProduct(array $data) : array
 
 $validationErrors = validateAddProduct($_POST);
 
-if (empty($validationErrors)) {
+/*if (empty($validationErrors)) {
 
     $product_id = $_POST['product_id'];
     $amount = $_POST['amount'];
@@ -62,5 +59,28 @@ if (empty($validationErrors)) {
  /*   echo "<pre>";
     var_dump($productCart);
     echo "</pre>";*/
+/*    require_once './cart.php';
+}*/
+
+if (empty($validationErrors)) {
+    $product_id = $_POST['product_id'];
+    $amount = $_POST['amount'];
+    $user_id = $_SESSION['userId'];
+    // Проверяем, существует ли продукт для пользователя
+
+    $stmt = $pdo->prepare("SELECT amount FROM user_products WHERE product_id = :product_id AND user_id = :user_id");
+    $stmt->execute([':product_id' => $product_id, ':user_id' => $user_id]);
+    $existingAmount = $stmt->fetchColumn();
+
+    if ($existingAmount !== false) {
+        // Продукт существует, обновляем количество
+        $newAmount = $existingAmount + $amount;
+        $stmtUpdate = $pdo->prepare("UPDATE user_products SET amount = :amount WHERE product_id = :product_id AND user_id = :user_id");
+        $stmtUpdate->execute([':amount' => $newAmount, ':product_id' => $product_id, ':user_id' => $user_id]);
+    } else {
+        // Продукт не существует, вставляем новую запись
+        $stmtInsert = $pdo->prepare("INSERT INTO user_products (product_id, amount, user_id) VALUES (:product_id, :amount, :user_id)");
+        $stmtInsert->execute([':product_id' => $product_id, ':amount' => $amount, ':user_id' => $user_id]);
+    }
     require_once './cart.php';
 }

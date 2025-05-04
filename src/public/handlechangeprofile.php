@@ -21,8 +21,8 @@ die;*/
 $oldname = $user['name'];
 $oldemail = $user['email'];
 $oldpassword = $user['password'];
-
-
+global $oldname; global $oldemail;
+//$_SESSION['name']=$oldname;
 function validateRegistration(array $data) : array
 {
     $errors = [];

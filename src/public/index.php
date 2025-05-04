@@ -18,7 +18,7 @@ if ($requestUri === '/registration') {
     } else {
         echo "$requestMethod для адреса $requestUri не поддерживается!";
     }
-} elseif ($requestUri === '/login_form') {
+} elseif ($requestUri === '/login') {
     if ($requestMethod === 'GET') {
         require_once './login_form.php';
     } elseif ($requestMethod === 'POST') {
@@ -68,16 +68,12 @@ elseif ($requestUri === '/catalog') {
         echo "$requestMethod для адреса $requestUri не поддерживается!";
     }
 }
-elseif ($requestUri === '/handle_login') {
-    if ($requestMethod === 'POST') {
-        require_once './handle_login.php';
-    } else {
-        echo "$requestMethod для адреса $requestUri не поддерживается!";
-    }
-}
+
 elseif ($requestUri === '/Add_product') {
     if ($requestMethod === 'GET') {
         require_once './add_product_form.php';
+    } elseif ($requestMethod === 'POST') {
+        require_once './handleadd_product_form.php';
     }
         else {
         echo "$requestMethod для адреса $requestUri не поддерживается!";
@@ -90,9 +86,9 @@ elseif ($requestUri === '/cart') {
         echo "$requestMethod для адреса $requestUri не поддерживается!";
     }
 }
-elseif ($requestUri === '/handleadd_product_form') {
+/*elseif ($requestUri === '/handleadd_product_form') {
     require_once './handleadd_product_form.php';
-}
+}*/
 
 
 else {

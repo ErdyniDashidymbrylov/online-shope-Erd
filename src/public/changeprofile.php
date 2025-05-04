@@ -1,4 +1,4 @@
-<!--<form action="handleregistrationform.php">
+ <!--<form action="handleregistrationform.php">
     <div class="container">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
@@ -92,20 +92,20 @@
         text-align: center;
     }
 </style>-->
-
+ <?php global $oldname; global $oldemail;?>
 <form action="handlechangeprofile" method="POST">
     <div class="container">
         <h1>Редактировать профиль</h1>
         <p>Пожалуйста введите новые данные.</p>
         <hr>
 
-        <label for="name"><b>Name</b></label>
+        <label for="name"><b>Name </b></label>
         <?php if(isset($errors['name'])): ?>
             <label style="color:red"><?php echo $errors['name']; ?></label>
         <?php endif; ?>
         <input  type="text" placeholder="" name="name" id="name"  value="<?php echo $oldname;?>">
 
-        <label for="email"><b>Email</b></label>
+        <label for="email"><b>Email </b></label>
         <?php if(isset($errors['email'])): ?>
             <label style="color:red"><?php echo $errors['email']; ?></label>
        <?php endif; ?>
