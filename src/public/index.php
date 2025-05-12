@@ -58,7 +58,10 @@ if ($requestUri === '/registration') {
 elseif ($requestUri === '/catalog') {
     if ($requestMethod === 'GET') {
         require_once './catalog/catalog.php';
-    } else {
+    } elseif ($requestMethod === 'POST') {
+        require_once './addProduct/handleadd_product_form.php';
+    }
+    else {
         echo "$requestMethod для адреса $requestUri не поддерживается!";
     }
 } elseif ($requestUri === '/catalog_page') {

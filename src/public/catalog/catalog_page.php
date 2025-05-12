@@ -20,6 +20,24 @@
                 </a>
             </div>
 
+            <form action="/Add_product" method="POST">
+                <div class="container">
+                    <h3>Добавить в корзину</h3>
+
+                    <input type="hidden" placeholder="Enter Product-id" name="product_id" id="product_id" value="<?php echo $product['id']; ?>">
+
+                    <label for="amount"><b></b></label>
+                    <?php if(isset($errors['email'])): ?>
+                        <label style="color:red"><?php echo $errors['amount']; ?></label>
+                    <?php endif; ?>
+                    <input type="text" placeholder="Введите количество" name="amount" id="amount" required>
+                    <button type="submit" class="registerbtn">Добавить</button>
+                </div>
+
+              <hr>
+
+            </form>
+
         <?php endforeach;?>
 
         <style>

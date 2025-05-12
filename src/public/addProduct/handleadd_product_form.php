@@ -10,7 +10,7 @@ if (!isset($_SESSION['userId'])) {
 }
 
 
-$validationErrors = $products->validateAddProduct($_POST);
+//$validationErrors = $products->validateAddProduct($_POST);
 
 /*if (empty($validationErrors)) {
 
@@ -32,13 +32,9 @@ $validationErrors = $products->validateAddProduct($_POST);
     }
    /* $stmtUpdate = $pdo->prepare("UPDATE user_products SET amount = :amount WHERE product_id = :product_id AND user_id = :user_id");
     $stmtUpdate->execute([':amount' => $newAmount, ':product_id' => $product_id, ':user_id' => $user_id]);*/
- /*   echo "<pre>";
-    var_dump($productCart);
-    echo "</pre>";*/
-/*    require_once './cart.php';
-}*/
 
-if (empty($validationErrors)) {
+
+/*if (empty($validationErrors)) {*/
     $productId = $_POST['product_id'];
     $amount = $_POST['amount'];
     $userId = $_SESSION['userId'];
@@ -46,11 +42,11 @@ if (empty($validationErrors)) {
 
     $productInAmount = $userProducts->selectAmountProducts($userId,$productId);
 
-    if ($productInAmount !== false) {
+    if (!empty($productInAmount)) {
         $newAmount = $productInAmount + $amount;
         $userProducts->updateProduct($productId, $newAmount, $userId);
     } else {
               $userProducts->insertProduct($productId, $amount, $userId);
     }
     require_once './cart/cart.php';
-}
+//}
