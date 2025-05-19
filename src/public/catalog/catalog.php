@@ -1,11 +1,11 @@
 <?php
-global $products;
+global $products, $productModel;
 session_start();
-require_once "./products.php";
+require_once "../Model/Product.php";
 
 if (isset($_SESSION['userId'])) {
 
-    $productsInCatalog = $products->getAllProducts();
+    $productsInCatalog = $productModel->getAllProducts();
     require_once './catalog/catalog_page.php';
 }
 /*echo "<pre>";

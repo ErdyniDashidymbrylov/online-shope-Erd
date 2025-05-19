@@ -52,8 +52,9 @@ echo "<pre>";*/
 
 
 //global $password;
-global $users, $pdo;
-require_once './users.php';
+global $users, $pdo, $userModel;
+require_once './Controllers/UsercController.php';
+require_once './Model/User.php';
 
 $validationErrors = $users->validateRegistration($_POST);
 if (empty($validationErrors)) {
@@ -63,7 +64,7 @@ if (empty($validationErrors)) {
     $password = $_POST['psw'];
     $passwordRepeat = $_POST['psw-repeat'];
 
-    $insertUser = $users->insertUser($_POST);
+    $insertUser = $userModel->insertUser($_POST);
 
 
    /* $lastid = $pdo->lastInsertId();
@@ -75,7 +76,7 @@ if (empty($validationErrors)) {
     echo "<pre>";*/
 
 
-    $selectUser = $users->selectUser($email);
+    $selectUser = $userModel->selectUser($email);
 
 /*    echo "<pre>";
     print_r($data);

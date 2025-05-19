@@ -1,8 +1,8 @@
 <?php
-global $users, $products, $userProducts;
-require_once './users.php';
-require_once './products.php';
-require_once './UserProducts.php';
+global $users, $products, $userProducts, $userModel, $userProductModel, $productModel;
+require_once '../Model/User.php';
+require_once '../Model/Product.php';
+require_once '../Model/UserProduct.php';
 /*if (!isset($_SESSION['userId'])) {
     header("Location: /login");
     exit();
@@ -49,22 +49,26 @@ $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
 /*$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);*/
-$user = $users->selectUserID($userId);
+$user = $userModel->selectUserID($userId);
 
-$productsInCart =$userProducts->selectProductByID($userId);
+$productsInCart =$userProductModel->selectProductByID($userId);
 
 $productsList = [];
+if (!isset($productModel)) {
+    $productModel = new Product();
+}
 
 foreach ($productsInCart as $cartItem) {
     $productId = $cartItem['product_id'];
 
-    $product = $products->getProductById($productId);
+    $product = $productModel->getProductById($productId);
 
     if ($product) {
         $productsList[] = $product;
     }
 }
 
+$summa = 0;
 
 ?>
 <a href="/catalog"> В каталог</a>
@@ -83,22 +87,25 @@ foreach ($productsInCart as $cartItem) {
                  </div>
             <?php
                    $amountInCart = 0;
+                   $resultSum = 1;
                 foreach ($productsInCart as $cartItem) {
                     if ($cartItem['product_id'] == $productList['id']) {
                         $amountInCart = $cartItem['amount'];
+                        $resultSum = $productList['price'] * $amountInCart;
                         break;
                     }
                 }
                 ?>
-                <p class="card-text">  <?php echo "Товар ". $productList['name']. " в корзине: ". $amountInCart; ?></p>
+                <p class="card-text">  <?php echo "Товар ". $productList['name']. " в корзине: ". $amountInCart." кг"; ?></p>
+            <p><?php echo "Товар на сумму: " . $resultSum. "!"; ?></p>
                </div>
 
     </div>
 </div>
-
+<?php $summa = $summa + $resultSum;?>
 <?php endforeach;?>
 
-
+<h1><?php echo "Товара в корзине на сумму: " . $summa. "!"; ?></h1>
 <style>
     body {
         background-color: #ddeefc;

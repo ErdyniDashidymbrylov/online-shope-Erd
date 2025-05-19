@@ -1,6 +1,7 @@
 <?php
-global $users;
-require_once './users.php';
+global $users, $userModel;
+require_once '../Controllers/UserController.php';
+require_once '../Model/User.php';
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -20,7 +21,7 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);*/
 
-$user = $users->selectUserID($userId);
+$user = $userModel->selectUserID($userId);
 
 /*echo "<h1>Добро пожаловать, " . $user['name'] . "!</h1>";
 

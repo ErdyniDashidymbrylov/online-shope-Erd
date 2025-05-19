@@ -1,6 +1,7 @@
 <?php
-global $users;
-require_once './users.php';
+global $users, $userModel;
+require_once '../Model/User.php';
+
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
      session_start();
@@ -12,7 +13,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
      $stmt = $pdo->query("SELECT * FROM users WHERE id = $userId");
      $user = $stmt->fetch();*/
 
-     $user = $users->selectUserID($userId);
+     $user = $userModel->selectUserID($userId);
 
  } else {
      header('location: /login');

@@ -1,7 +1,8 @@
 <?php
 
-global $users;
-require_once './users.php';
+global $users, $userModel;
+require_once '../Controllers/UserController.php';
+require_once '../Model/User.php';
     function validateName($data){
         $errors = [];
         if (empty($data['username'])) {
@@ -38,7 +39,7 @@ if (empty($errors)) {
         return $data;
     }*/
 
-   $user = $users->selectUser($username);
+   $user = $userModel->selectUser($username);
 /*print_r($user);
 die();*/
     if (!empty($user)) {

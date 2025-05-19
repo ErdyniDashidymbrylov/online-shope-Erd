@@ -1,7 +1,9 @@
 <?php
-global $products, $userProducts;
-require_once './products.php';
-require_once './UserProducts.php';
+global $products, $userProducts, $userProductModel;
+require_once '../Controllers/Productcontroller.php';
+require_once '../Controllers/UserProductcontroller.php';
+require_once '../Model/UserProduct.php';
+require_once '../Model/Product.php';
 session_start();
 
 if (!isset($_SESSION['userId'])) {
@@ -40,13 +42,13 @@ if (!isset($_SESSION['userId'])) {
     $userId = $_SESSION['userId'];
     //$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
 
-    $productInAmount = $userProducts->selectAmountProducts($userId,$productId);
+    $productInAmount = $userProductModel->selectAmountProducts($userId,$productId);
 
     if (!empty($productInAmount)) {
         $newAmount = $productInAmount + $amount;
-        $userProducts->updateProduct($productId, $newAmount, $userId);
+        $userProductModel->updateProduct($productId, $newAmount, $userId);
     } else {
-              $userProducts->insertProduct($productId, $amount, $userId);
+             $userProductModel->insertProduct($productId, $amount, $userId);
     }
     require_once './cart/cart.php';
 //}
