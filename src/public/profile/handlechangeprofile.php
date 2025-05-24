@@ -1,5 +1,7 @@
 <?php
-global $pdo, $users, $userModel;
+
+?>
+/*global $pdo, $users, $userModel;
 require_once '../Controllers/UserController.php';
 require_once '../Model/User.php';
 if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -17,7 +19,7 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
 $stmt->execute([':user_id' => $userId]);
 $user = $stmt->fetch();*/
 
-$user = $userModel->selectUserID($userId);
+/*$user = $userModel->selectUserID($userId);
 
 
 
@@ -31,13 +33,13 @@ if (empty($validationErrors)) {
      $passwordRepeat = $_POST['psw-repeat'];*/
 
 
-    if ($user['name'] !== $name) {
+/*    if ($user['name'] !== $name) {
         $userModel->updateUser($name, $userId);
     }
 
     if ($user['email'] !== $email)
     {
-        $userModel->updateUser($email, $userId);
+        $userModel->updateUser($email, $userId);*/
         }
 
    /* if (!empty($_POST['psw']) && $_POST['psw'] === $_POST['psw-repeat']) {
@@ -45,10 +47,10 @@ if (empty($validationErrors)) {
             $stmtUpdatePassword = $pdo->prepare("UPDATE users SET password = :password WHERE id = $userId");
             $stmtUpdatePassword->execute([':password' => $hashedPassword, ':user_id' => $userId]);
         }*/
-    header("Location: /profile");
+/*    header("Location: /profile");
     exit;
 }
-        require_once './profile/profile.php';
+        require_once '../Views/profile.php';*/
 
 
 

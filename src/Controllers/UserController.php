@@ -2,7 +2,7 @@
 
 class UserController
 {
-   public function validateRegistration(array $data) : array
+    private function validateRegistration(array $data): array
     {
         $errors = [];
 
@@ -11,8 +11,8 @@ class UserController
             if (strlen($name) < 2) {
                 $errors['name'] = "Имя обязательно для заполнения.";
             }
-        }
-        else  { $errors['name'] = "Имя должно быть заполнено." ;
+        } else {
+            $errors['name'] = "Имя должно быть заполнено.";
         }
 
         if (isset($data['email'])) {
@@ -22,50 +22,48 @@ class UserController
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Некорректный формат email.";
             } else {
-                $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
-                $stmt = $pdo->prepare(query: "SELECT COUNT(*) FROM users WHERE email = :email");
-                $stmt->execute([':email' => $email]);
-                $row = $stmt->fetchColumn();
+
+                $userModel = new User();
+
+                $row = $userModel->selectUser($email);
                 if ($row > 0) {
                     $errors['email'] = 'Этот Email уже зарегистрирован!';
                 }
             }
-        }   else { $errors['email'] = "Емаил должен быть заполнен." ;
+        } else {
+            $errors['email'] = "Емаил должен быть заполнен.";
         }
 
-        if (isset($data['psw']))
-        {
+        if (isset($data['psw'])) {
             $password = $data['psw'];
-            if (strlen($password)<2) {
+            if (strlen($password) < 2) {
                 $errors['psw'] = "Пароль не может содержать меньше 2 - х символов.";
             }
             $passwordRepeat = $data['psw-repeat'];
             if ($password !== $passwordRepeat) {
                 $errors['psw-repeat'] = "Пароли не совпадают.";
             }
-        } else { $errors['psw'] = "Пароль должен быть заполнен." ;
+        } else {
+            $errors['psw'] = "Пароль должен быть заполнен.";
         }
 
         return $errors;
     }
 
 
+    /*    public function validateName(array $data): array
+        {
+            $errors = [];
+            if (empty($data['username'])) {
+                $errors['username'] = "Username обязательно для заполнения";
+            }
+            if (empty($data['password'])) {
+                $errors['password'] = 'Поле password обязательно для заполнения';
+            }
+            return $errors;
+        }*/
 
-
-
-/*    public function validateName(array $data): array
-    {
-        $errors = [];
-        if (empty($data['username'])) {
-            $errors['username'] = "Username обязательно для заполнения";
-        }
-        if (empty($data['password'])) {
-            $errors['password'] = 'Поле password обязательно для заполнения';
-        }
-        return $errors;
-    }*/
-
-   public function validateChangeProfile(array $data) : array
+    public function validateChangeProfile(array $data): array
     {
         $errors = [];
 
@@ -74,8 +72,8 @@ class UserController
             if (strlen($name) < 2) {
                 $errors['name'] = "Имя обязательно для заполнения.";
             }
-        }
-        else  { $errors['name'] = "Имя должно быть заполнено." ;
+        } else {
+            $errors['name'] = "Имя должно быть заполнено.";
         }
 
         if (isset($data['email'])) {
@@ -85,10 +83,11 @@ class UserController
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Некорректный формат email.";
             } else {
-                $pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
-                $stmt = $pdo->prepare(query: "SELECT * FROM users WHERE email = :email");
-                $stmt->execute([':email' => $email]);
-                $user = $stmt->fetch();
+
+
+                $userModel = new User();
+
+                $user = $userModel->selectUser($email);
 
                 $userId = $_SESSION['userId'];
                 if ($user !== false) {
@@ -98,72 +97,159 @@ class UserController
                 }
             }
         }
-            return $errors;
+        return $errors;
     }
 
     public function getRegistration()
     {
-        require_once './registration/registrationform.php';
-    }
-   public function postRegistration()
-   {
-       require_once './registration/handleregistrationform.php';
-   }
-    public function getLogin()
-    {
-        require_once './login/login_form.php';
+        require_once '../Views/registrationform.php';
     }
 
+    public function postRegistration()
+    {
+
+        require_once '../Model/User.php';
+
+        $validationErrors = $this->validateRegistration($_POST);
+        if (empty($validationErrors)) {
+
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $password = $_POST['psw'];
+            $passwordRepeat = $_POST['psw-repeat'];
+
+            $userModel = new User();
+            $insertUser = $userModel->insertUser($_POST);
+
+            $selectUser = $userModel->selectUser($email);
+
+
+            $this->getLogin();
+
+        } else {
+
+            $this->getRegistration();
+
+        }
+    }
+
+    public function getLogin()
+    {
+        require_once '../Views/login_form.php';
+    }
+   private function validateName($data)
+   {
+       $errors = [];
+       if (empty($data['username'])) {
+           $errors['username'] = "Username обязательно для заполнения";
+       }
+       if (empty($data['password'])) {
+           $errors['password'] = 'Поле password обязательно для заполнения';
+       }
+       return $errors;
+   }
     public function postLogin()
     {
-        require_once './login/handle_login.php';
+        global $users, $userModel;
+        require_once '../Model/User.php';
+        $userModel = new User();
+
+        $errors = $this->validateName($_POST);
+
+        if (empty($errors)) {
+
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $user = $userModel->selectUser($username);
+
+            if (!empty($user)) {
+                $passwordDB = $user['password'];
+
+                if (password_verify($password, $passwordDB)) {
+                    session_start();
+                    $_SESSION['userId'] = $user['id'];
+                    // exit();
+                    header("Location: /catalog");
+                    exit();
+                    //require_once './catalog.php';
+                } else {
+
+                    $errors['username'] = 'username or password is incorrect!';
+                }
+            } else {
+                $errors['username'] = 'Пользователь с таким логином не существует!';
+            }
+        }
+        else
+        {
+            $this->getLogin();
+        }
+
     }
 
     public function getLogout()
     {
         require_once './logout.php';
     }
+
     public function getProfile()
     {
-        require_once './profile/profile.php';
+        require_once '../Views/profile.php';
     }
+
     public function getChangeProfile()
     {
-        require_once './profile/changeprofile.php';
+        require_once '../Views/changeprofile.php';
+
     }
+
     public function postChangeProfile()
     {
-        require_once './profile/handlechangeprofile.php';
+        global $pdo, $users, $userModel;
+        require_once '../Model/User.php';
+        $userModel = new User();
+
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['userId'])) {
+            header("Location: /login");
+            exit();
+        }
+
+        $userId = $_SESSION['userId'];
+
+        $user = $userModel->selectUserID($userId);
+
+        $validationErrors = $this->validateChangeProfile($_POST);
+
+        if (empty($validationErrors)) {
+
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+
+
+            if ($user['name'] !== $name) {
+                $userModel->updateUser($name, $userId);
+            }
+
+            if ($user['email'] !== $email) {
+                $userModel->updateUser($email, $userId);
+            }
+
+            header("Location: /profile");
+            exit;
+        }
+         $this->getProfile();
     }
-    public function getCatalog()
-    {
-        require_once './catalog/catalog.php';
-    }
-    public function postCatalog()
-    {
-        require_once './addProduct/handleadd_product_form.php';
-    }
-    public function getCatalogPage()
-    {
-        require_once './catalog/catalog_page.php';
-    }
-    public function getAdd_product()
-    {
-        require_once './addProduct/add_product_form.php';
-    }
-    public function postAdd_product()
-    {
-        require_once './addProduct/handleadd_product_form.php';
-    }
-    public function getCart()
-    {
-        require_once './cart/cart.php';
-    }
+
+
 
 
 }
 
-$users = new UserController();
 
 
 

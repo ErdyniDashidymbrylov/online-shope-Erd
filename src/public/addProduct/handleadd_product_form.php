@@ -1,5 +1,7 @@
 <?php
-global $products, $userProducts, $userProductModel;
+
+?>
+/*global $products, $userProducts, $userProductModel;
 require_once '../Controllers/Productcontroller.php';
 require_once '../Controllers/UserProductcontroller.php';
 require_once '../Model/UserProduct.php';
@@ -37,7 +39,7 @@ if (!isset($_SESSION['userId'])) {
 
 
 /*if (empty($validationErrors)) {*/
-    $productId = $_POST['product_id'];
+   /* $productId = $_POST['product_id'];
     $amount = $_POST['amount'];
     $userId = $_SESSION['userId'];
     //$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
@@ -50,5 +52,5 @@ if (!isset($_SESSION['userId'])) {
     } else {
              $userProductModel->insertProduct($productId, $amount, $userId);
     }
-    require_once './cart/cart.php';
+    require_once './cart/cart.php';*/
 //}

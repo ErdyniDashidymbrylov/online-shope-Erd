@@ -52,8 +52,8 @@ echo "<pre>";*/
 
 
 //global $password;
-global $users, $pdo, $userModel;
-require_once './Controllers/UsercController.php';
+/*global $users, $pdo, $userModel;
+require_once './Controllers/UserController.php';
 require_once './Model/User.php';
 
 $validationErrors = $users->validateRegistration($_POST);
@@ -76,19 +76,19 @@ if (empty($validationErrors)) {
     echo "<pre>";*/
 
 
-    $selectUser = $userModel->selectUser($email);
+    //$selectUser = $userModel->selectUser($email);
 
 /*    echo "<pre>";
     print_r($data);
     echo "<pre>";*/
 
-    require_once './login/login_form.php';
+/*    require_once '../Views/login_form.php';
 
 } else {
 
-require_once './registration/registrationform.php';
+require_once '../Views/registrationform.php';
 
-}
+}*/
 
 ?>
 

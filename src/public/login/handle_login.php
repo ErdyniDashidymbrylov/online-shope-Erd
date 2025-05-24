@@ -1,5 +1,5 @@
 <?php
-
+/*
 global $users, $userModel;
 require_once '../Controllers/UserController.php';
 require_once '../Model/User.php';
@@ -39,10 +39,10 @@ if (empty($errors)) {
         return $data;
     }*/
 
-   $user = $userModel->selectUser($username);
+  /* $user = $userModel->selectUser($username);
 /*print_r($user);
 die();*/
-    if (!empty($user)) {
+/*    if (!empty($user)) {
         $passwordDB = $user['password'];
 
         if (password_verify($password, $passwordDB)) {
@@ -62,8 +62,8 @@ die();*/
 }
   else
 {
-    require_once './login/login_form.php';
-}
+    require_once '../Views/login_form.php';
+}*/
 
 
 

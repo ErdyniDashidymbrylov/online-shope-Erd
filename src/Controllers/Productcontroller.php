@@ -3,8 +3,6 @@
 class Productcontroller
 {
 
-
-
     function validateAddProduct(array $data) : array
     {
         $errors = [];
@@ -30,7 +28,28 @@ class Productcontroller
         return $errors;
     }
 
+    public function getCatalog()
+    {
+        global $products, $productModel;
+        session_start();
+        require_once "../Model/Product.php";
+        $productModel = new Product();
 
+        if (isset($_SESSION['userId'])) {
+
+            $productsInCatalog = $productModel->getAllProducts();
+            require_once '../Views/catalog_page.php';
+        } else {
+            header('Location: /login');
+        }
+    }
+
+
+
+
+    public function getCatalogPage()
+    {
+        require_once '../Views/catalog_page.php';
+    }
 }
 
-$products = new Productcontroller();

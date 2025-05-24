@@ -3,5 +3,5 @@
 require_once '../Core/App.php';
 
 $app = new App();
-$app->Run();
+$app->run();
 
