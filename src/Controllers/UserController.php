@@ -1,7 +1,12 @@
 <?php
+namespace Controllers;
+
+//require_once '../Model/User.php';
 
 class UserController
 {
+
+
     private function validateRegistration(array $data): array
     {
         $errors = [];
@@ -23,7 +28,7 @@ class UserController
                 $errors['email'] = "Некорректный формат email.";
             } else {
 
-                $userModel = new User();
+                $userModel = new \Model\User();
 
                 $row = $userModel->selectUser($email);
                 if ($row > 0) {
@@ -85,7 +90,7 @@ class UserController
             } else {
 
 
-                $userModel = new User();
+                $userModel = new \Model\User();
 
                 $user = $userModel->selectUser($email);
 
@@ -108,7 +113,6 @@ class UserController
     public function postRegistration()
     {
 
-        require_once '../Model/User.php';
 
         $validationErrors = $this->validateRegistration($_POST);
         if (empty($validationErrors)) {
@@ -118,7 +122,7 @@ class UserController
             $password = $_POST['psw'];
             $passwordRepeat = $_POST['psw-repeat'];
 
-            $userModel = new User();
+            $userModel = new \Model\User();
             $insertUser = $userModel->insertUser($_POST);
 
             $selectUser = $userModel->selectUser($email);
@@ -151,8 +155,8 @@ class UserController
     public function postLogin()
     {
         global $users, $userModel;
-        require_once '../Model/User.php';
-        $userModel = new User();
+
+        $userModel = new \Model\User();
 
         $errors = $this->validateName($_POST);
 
@@ -207,8 +211,8 @@ class UserController
     public function postChangeProfile()
     {
         global $pdo, $users, $userModel;
-        require_once '../Model/User.php';
-        $userModel = new User();
+
+        $userModel = new \Model\User();
 
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();

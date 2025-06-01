@@ -1,84 +1,103 @@
 <?php
-
+namespace Core;
 class App
 {
     private array $routes = [
         '/registration' => [
             'GET' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'getRegistration',
             ],
             'POST' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'postRegistration',
             ],
         ],
         '/login' => [
             'GET' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'getLogin',
             ],
             'POST' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'postLogin',
             ],
         ],
         '/logout' => [
             'GET' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'getLogout',
             ],
         ],
         '/profile' => [
             'GET' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'getProfile',
             ],
         ],
         '/changeprofile' => [
             'GET' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'getChangeProfile',
             ],
             'POST' => [
-                'class' => 'UserController',
+                'class' => '\Controllers\UserController',
                 'method' => 'postChangeProfile',
             ],
         ],
         '/catalog' => [
             'GET' => [
-                'class' => 'Productcontroller',
+                'class' => '\Controllers\Productcontroller',
                 'method' => 'getCatalog',
             ],
             'POST' => [
-                'class' => 'Productcontroller',
+                'class' => '\Controllers\Productcontroller',
                 'method' => 'postCatalog',
             ],
         ],
         '/catalog_page' => [
             'GET' => [
-                'class' => 'Productcontroller',
+                'class' => '\Controllers\Productcontroller',
                 'method' => 'getCatalogPage',
             ],
 
         ],
         '/Add_product' => [
             'GET' => [
-                'class' => 'UserProductcontroller',
+                'class' => '\Controllers\UserProductcontroller',
                 'method' => 'getAdd_product',
             ],
             'POST' => [
-                'class' => 'UserProductcontroller',
+                'class' => '\Controllers\UserProductcontroller',
                 'method' => 'postAdd_product',
             ],
         ],
         '/cart' => [
             'GET' => [
-                'class' => 'UserProductcontroller',
+                'class' => '\Controllers\UserProductcontroller',
                 'method' => 'getCart',
             ],
+            /*'POST' => [
+                'class' => '\Controllers\UserProductcontroller',
+                'method' => 'postCart',
+            ],*/
         ],
-
+        '/Order' => [
+            'GET' => [
+                'class' => '\Controllers\OrderController',
+                'method' => 'getCheckoutForm',
+            ],
+            'POST' => [
+                'class' => '\Controllers\OrderController',
+                'method' => 'handleCheckoutForm',
+            ],
+        ],
+        '/OrdersView' => [
+            'GET' => [
+                'class' => '\Controllers\OrderController',
+                'method' => 'getOrdersView',
+                ],
+            ],
     ];
 
     public function run()
@@ -94,7 +113,8 @@ class App
                 $class = $handler['class'];
                 $method = $handler['method'];
 
-                require_once "../Controllers/$class.php";
+                //require_once "../Controllers/$class.php";
+
                 $controller = new $class();
                 $controller->$method();
             } else {

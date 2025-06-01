@@ -1,7 +1,8 @@
 <?php
-
-require_once '../Model/GetData.php';
-class User extends GetData
+namespace Model;
+use \PDO;
+//require_once '../Model/Model.php';
+class User extends Model
 {
     public function insertUser(array $data) : array
     {
@@ -28,7 +29,7 @@ class User extends GetData
     {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :user_id");
         $stmt->execute(['user_id' => $userId]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch();
         return $user;
     }
 

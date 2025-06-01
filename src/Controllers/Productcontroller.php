@@ -1,4 +1,8 @@
 <?php
+namespace Controllers;
+
+//require_once "../Model/Product.php";
+
 
 class Productcontroller
 {
@@ -32,8 +36,8 @@ class Productcontroller
     {
         global $products, $productModel;
         session_start();
-        require_once "../Model/Product.php";
-        $productModel = new Product();
+
+        $productModel = new \Model\Product();
 
         if (isset($_SESSION['userId'])) {
 

@@ -1,7 +1,7 @@
 <?php
 global $users, $userModel;
-require_once '../Model/User.php';
-$userModel = new User();
+//require_once '../Model/User.php';
+$userModel = new \Model\User();
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
      session_start();

@@ -1,18 +1,29 @@
 <?php
-global $users, $products, $userProducts, $userModel, $userProductModel, $productModel;
-require_once '../Model/User.php';
-require_once '../Model/Product.php';
-require_once '../Model/UserProduct.php';
-$userModel = new User();
-$userProductModel = new UserProduct();
-$productModel = new Product();
+/*$userModel = new \Model\User();
+$userProductModel = new \Model\UserProduct();
+$userId = $_SESSION['userId'];
+$user = $userModel->selectUserID($userId);
+$productsInCart =$userProductModel->selectProductByID($userId);*/
+/*$UserProductcontroller = new \Controllers\UserProductcontroller();
+$UserProductcontroller->postCart();
+*/
+$userModel = new \Model\User();
+$userProductModel = new \Model\UserProduct();
+$productModel = new \Model\Product();
 
-if (!isset($_SESSION['userId'])) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+if (isset($_SESSION['userId'])) {
+$userId = $_SESSION['userId'];}
+
+/*if (!isset($_SESSION['userId'])) {
     header("Location: /login");
     exit();
 }
 
-$userId = $_SESSION['userId'];
+$userId = $_SESSION['userId'];*/
 
 //$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
 
@@ -21,9 +32,9 @@ $user = $userModel->selectUserID($userId);
 $productsInCart =$userProductModel->selectProductByID($userId);
 
 $productsList = [];
-if (!isset($productModel)) {
-    $productModel = new Product();
-}
+/*if (!isset($productModel)) {
+    $productModel = new \Model\Product();
+}*/
 
 foreach ($productsInCart as $cartItem) {
     $productId = $cartItem['product_id'];
@@ -37,9 +48,11 @@ foreach ($productsInCart as $cartItem) {
 
 $summa = 0;
 
+
 ?>
 <a href="/catalog"> В каталог</a>
 <a href="Add_product"> Добавить в корзину</a>
+
 <h1><?php echo "Добро пожаловать, " . $user['name'] . "!". " здесь отображаются ваши товары в корзине"; ?></h1>
 
 
@@ -73,6 +86,7 @@ $summa = 0;
 <?php endforeach;?>
 
 <h1><?php echo "Товара в корзине на сумму: " . $summa. "!"; ?></h1>
+<a href="/Order"> Оформить заказ</a>
 <style>
     body {
         background-color: #ddeefc;

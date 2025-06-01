@@ -1,6 +1,8 @@
 <?php
-require_once '../Model/GetData.php';
-class UserProduct extends GetData
+namespace Model;
+use \PDO;
+//require_once '../Model/Model.php';
+class UserProduct extends Model
 {
     public function insertProduct(int $productId,int $amount,int $userId): void
     {
@@ -32,6 +34,12 @@ class UserProduct extends GetData
         $stmtcart->execute(['user_id' => $userId]);
         $result = $stmtcart->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    public function deleteByUserId(int $userId): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM user_products WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $userId]);
     }
 
 }

@@ -1,4 +1,9 @@
 <?php
+namespace Controllers;
+
+/*require_once '../Controllers/Productcontroller.php';
+require_once '../Model/UserProduct.php';
+require_once '../Model/Product.php';*/
 
 class UserProductcontroller
 {
@@ -10,10 +15,8 @@ class UserProductcontroller
 
     public function postAdd_product()
     {
-        require_once '../Controllers/Productcontroller.php';
-        require_once '../Model/UserProduct.php';
-        require_once '../Model/Product.php';
-        $userProductModel = new UserProduct();
+
+        $userProductModel = new \Model\UserProduct();
 
         session_start();
 
@@ -41,4 +44,44 @@ class UserProductcontroller
     {
         require_once '../Views/cart.php';
     }
+
+   /* public function postCart()
+    {
+        /*require_once '../Model/User.php';
+            require_once '../Model/Product.php';
+            require_once '../Model/UserProduct.php';*/
+       /* $userModel = new \Model\User();
+        $userProductModel = new \Model\UserProduct();
+        $productModel = new \Model\Product();
+
+        if (!isset($_SESSION['userId'])) {
+            header("Location: /login");
+            exit();
+        }
+
+        $userId = $_SESSION['userId'];
+
+//$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
+
+        $user = $userModel->selectUserID($userId);
+
+        $productsInCart =$userProductModel->selectProductByID($userId);
+
+        $productsList = [];
+        /*if (!isset($productModel)) {
+            $productModel = new \Model\Product();
+        }*/
+
+      /*  foreach ($productsInCart as $cartItem) {
+            $productId = $cartItem['product_id'];
+
+            $product = $productModel->getProductById($productId);
+
+            if ($product) {
+                $productsList[] = $product;
+            }
+        }
+
+        $summa = 0;*/
+
 }

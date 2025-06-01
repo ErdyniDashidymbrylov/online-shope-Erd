@@ -1,8 +1,10 @@
 <?php
 global $users, $userModel;
-require_once '../Controllers/UserController.php';
-require_once '../Model/User.php';
-$userModel = new User();
+/*require_once '../Controllers/UserController.php';
+require_once '../Model/User.php';*/
+$userModel = new \Model\User();
+
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -24,6 +26,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);*/
 
 $user = $userModel->selectUserID($userId);
 
+
 /*echo "<h1>Добро пожаловать, " . $user['name'] . "!</h1>";
 
 echo "<h3>ваша электронная почта: " . $user['email'] . "!</h3>";
@@ -43,6 +46,7 @@ echo "<p><a href='logout.php'>Выйти</a></p>";*/
     <h3 class="profile-name"><?php echo "Привет, " . $user['name'] . "!";?></>
     <p class="about">Вы находитесь на странице профиля</p>
     <a href=''><button class="btn">Написать письмо <?php echo $user['email']?></button></a>
+    <a href='/OrdersView'><button class="btn">Мои заказы </button></a>
     <a href='/changeprofile'><button class="btn">Редактировать профиль</button></a>
     <a href='/logout'><button class="btn">Выйти</button></a>
 </div>

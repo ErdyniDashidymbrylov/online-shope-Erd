@@ -1,6 +1,9 @@
 <?php
-require_once '../Model/GetData.php';
-class Product extends GetData
+
+namespace Model;
+use \PDO;
+//require_once '../Model/Model.php';
+class Product extends Model
 {
     public function getAllProducts():array
     {
