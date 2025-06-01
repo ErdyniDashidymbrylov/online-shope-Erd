@@ -5,8 +5,23 @@ namespace Controllers;
 require_once '../Model/UserProduct.php';
 require_once '../Model/Product.php';*/
 
+use Model\Product;
+use Model\User;
+use Model\UserProduct;
+
 class UserProductcontroller
 {
+    private Product $productModel;
+
+    private User $userModel;
+    private UserProduct $userProductModel;
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+        $this->userModel = new User();
+        $this->userProductModel = new UserProduct();
+    }
 
     public function getAdd_product()
     {
@@ -16,7 +31,6 @@ class UserProductcontroller
     public function postAdd_product()
     {
 
-        $userProductModel = new \Model\UserProduct();
 
         session_start();
 
@@ -29,13 +43,13 @@ class UserProductcontroller
         $amount = $_POST['amount'];
         $userId = $_SESSION['userId'];
 
-        $productInAmount = $userProductModel->selectAmountProducts($userId, $productId);
+        $productInAmount = $this->userProductModel->selectAmountProducts($userId, $productId);
 
         if (!empty($productInAmount)) {
             $newAmount = $productInAmount + $amount;
-            $userProductModel->updateProduct($productId, $newAmount, $userId);
+            $this->userProductModel->updateProduct($productId, $newAmount, $userId);
         } else {
-            $userProductModel->insertProduct($productId, $amount, $userId);
+            $this->userProductModel->insertProduct($productId, $amount, $userId);
         }
         $this->getCart();
     }
@@ -44,6 +58,8 @@ class UserProductcontroller
     {
         require_once '../Views/cart.php';
     }
+
+}
 
    /* public function postCart()
     {
@@ -72,16 +88,4 @@ class UserProductcontroller
             $productModel = new \Model\Product();
         }*/
 
-      /*  foreach ($productsInCart as $cartItem) {
-            $productId = $cartItem['product_id'];
-
-            $product = $productModel->getProductById($productId);
-
-            if ($product) {
-                $productsList[] = $product;
-            }
-        }
-
-        $summa = 0;*/
-
-}
+      

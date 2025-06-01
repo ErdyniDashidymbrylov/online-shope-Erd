@@ -3,9 +3,25 @@
 namespace Controllers;
 
 use Model\Order;
+use Model\OrderProduct;
+use Model\Product;
+use Model\UserProduct;
 
 class OrderController
 {
+    private UserProduct $userProductModel;
+    private Order $orderModel;
+    private Product $productModel;
+    private OrderProduct $orderProductModel;
+
+    public function __construct()
+    {
+       $this->orderModel = new Order();
+        $this->orderProductModel = new OrderProduct();
+        $this->productModel = new Product();
+        $this->userProductModel = new UserProduct();
+    }
+
    public function getCheckoutForm()
    {
        require_once "../Views/Orderform.php";
@@ -30,22 +46,18 @@ class OrderController
               $comment = $_POST['comment'];
               $userId = $_SESSION['userId'];
 
-              $orderModel = new \Model\Order();
-              $orderId = $orderModel->create($contactName, $contactPhone, $address, $comment,$userId);
+              $orderId = $this->orderModel->create($contactName, $contactPhone, $address, $comment,$userId);
 
+              $userProducts = $this->userProductModel->selectProductByID($userId);
 
-              $userProductModel = new \Model\UserProduct();
-              $userProducts = $userProductModel->selectProductByID($userId);
-
-              $orderProductModel = new \Model\OrderProduct();
               foreach ($userProducts as $userProduct) {
                   $productId = $userProduct['product_id'];
                   $amount = $userProduct['amount'];
 
-                  $orderProductModel->create($orderId, $productId, $amount);
+                  $this->orderProductModel->create($orderId, $productId, $amount);
               }
 
-              $userProductModel->deleteByUserId($userId);
+               $this->userProductModel->deleteByUserId($userId);
            }
             else {
                 require_once "../Views/Orderform.php";
@@ -82,10 +94,6 @@ private function validateForm($data)
 
 public function getOrdersView()
 {
-    $orderModel = new \Model\Order();
-    $orderProductModel = new \Model\OrderProduct();
-    $productModel = new \Model\Product();
-
 
     if (session_status() !== PHP_SESSION_ACTIVE) {
         session_start();
@@ -98,17 +106,17 @@ public function getOrdersView()
 
     $userId = $_SESSION['userId'];
 
-    $userOrders = $orderModel->getAllByUserId($userId);
+    $userOrders = $this->orderModel->getAllByUserId($userId);
 
     $newUserOrders = [];
     foreach ($userOrders as $userOrder) {
-        $orderProducts = $orderProductModel->getAllByOrderId($userOrder['id']);
+        $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder['id']);
 
         $newOrderProducts = [];
         $sum = 0;
         foreach ($orderProducts as $orderProduct) {
 
-            $product = $productModel->getProductById($orderProduct['product_id']);
+            $product = $this->productModel->getProductById($orderProduct['product_id']);
             $orderProduct['name'] = $product['name'];
             $orderProduct['price'] = $product['price'];
             $orderProduct['totalsum'] = $orderProduct['amount'] * $orderProduct['price'];

@@ -3,9 +3,22 @@ namespace Controllers;
 
 //require_once '../Model/User.php';
 
+use Model\Order;
+use Model\Product;
+use Model\User;
+use Model\UserProduct;
+
 class UserController
 {
+    private Product $productModel;
 
+    private User $userModel;
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+        $this->userModel = new User();
+    }
 
     private function validateRegistration(array $data): array
     {
@@ -28,9 +41,7 @@ class UserController
                 $errors['email'] = "Некорректный формат email.";
             } else {
 
-                $userModel = new \Model\User();
-
-                $row = $userModel->selectUser($email);
+                $row = $this->userModel->selectUser($email);
                 if ($row > 0) {
                     $errors['email'] = 'Этот Email уже зарегистрирован!';
                 }
@@ -90,9 +101,7 @@ class UserController
             } else {
 
 
-                $userModel = new \Model\User();
-
-                $user = $userModel->selectUser($email);
+                $user = $this->userModel->selectUser($email);
 
                 $userId = $_SESSION['userId'];
                 if ($user !== false) {
@@ -122,10 +131,9 @@ class UserController
             $password = $_POST['psw'];
             $passwordRepeat = $_POST['psw-repeat'];
 
-            $userModel = new \Model\User();
-            $insertUser = $userModel->insertUser($_POST);
+            $insertUser = $this->userModel->insertUser($_POST);
 
-            $selectUser = $userModel->selectUser($email);
+            $selectUser = $this->userModel->selectUser($email);
 
 
             $this->getLogin();
@@ -141,22 +149,22 @@ class UserController
     {
         require_once '../Views/login_form.php';
     }
-   private function validateName($data)
-   {
-       $errors = [];
-       if (empty($data['username'])) {
-           $errors['username'] = "Username обязательно для заполнения";
-       }
-       if (empty($data['password'])) {
-           $errors['password'] = 'Поле password обязательно для заполнения';
-       }
-       return $errors;
-   }
+
+    private function validateName($data)
+    {
+        $errors = [];
+        if (empty($data['username'])) {
+            $errors['username'] = "Username обязательно для заполнения";
+        }
+        if (empty($data['password'])) {
+            $errors['password'] = 'Поле password обязательно для заполнения';
+        }
+        return $errors;
+    }
+
     public function postLogin()
     {
         global $users, $userModel;
-
-        $userModel = new \Model\User();
 
         $errors = $this->validateName($_POST);
 
@@ -165,7 +173,7 @@ class UserController
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $user = $userModel->selectUser($username);
+            $user = $this->userModel->selectUser($username);
 
             if (!empty($user)) {
                 $passwordDB = $user['password'];
@@ -184,9 +192,7 @@ class UserController
             } else {
                 $errors['username'] = 'Пользователь с таким логином не существует!';
             }
-        }
-        else
-        {
+        } else {
             $this->getLogin();
         }
 
@@ -210,9 +216,7 @@ class UserController
 
     public function postChangeProfile()
     {
-        global $pdo, $users, $userModel;
 
-        $userModel = new \Model\User();
 
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
@@ -225,7 +229,7 @@ class UserController
 
         $userId = $_SESSION['userId'];
 
-        $user = $userModel->selectUserID($userId);
+        $user = $this->userModel->selectUserID($userId);
 
         $validationErrors = $this->validateChangeProfile($_POST);
 
@@ -236,27 +240,16 @@ class UserController
 
 
             if ($user['name'] !== $name) {
-                $userModel->updateUser($name, $userId);
+                $this->userModel->updateUser($name, $userId);
             }
 
             if ($user['email'] !== $email) {
-                $userModel->updateUser($email, $userId);
+                $this->userModel->updateUser($email, $userId);
             }
 
             header("Location: /profile");
             exit;
         }
-         $this->getProfile();
     }
-
-
-
-
 }
-
-
-
-
-
-
-
+ 

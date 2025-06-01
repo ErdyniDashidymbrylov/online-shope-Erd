@@ -4,9 +4,17 @@ namespace Controllers;
 //require_once "../Model/Product.php";
 
 
+use Model\Order;
+use Model\Product;
+
 class Productcontroller
 {
+    private Product $productModel;
 
+    public function __construct()
+    {
+        $this->productModel = new Product();
+    }
     function validateAddProduct(array $data) : array
     {
         $errors = [];
@@ -37,11 +45,10 @@ class Productcontroller
         global $products, $productModel;
         session_start();
 
-        $productModel = new \Model\Product();
 
         if (isset($_SESSION['userId'])) {
 
-            $productsInCatalog = $productModel->getAllProducts();
+            $productsInCatalog = $this->productModel->getAllProducts();
             require_once '../Views/catalog_page.php';
         } else {
             header('Location: /login');

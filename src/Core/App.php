@@ -1,9 +1,16 @@
 <?php
 namespace Core;
+
+use Controllers\UserController;
+use Controllers\Productcontroller;
+use Controllers\OrderController;
+use Controllers\UserProductcontroller;
+
+
 class App
 {
-    private array $routes = [
-        '/registration' => [
+    private array $routes = [];
+        /*'/registration' => [
             'GET' => [
                 'class' => '\Controllers\UserController',
                 'method' => 'getRegistration',
@@ -81,7 +88,7 @@ class App
                 'class' => '\Controllers\UserProductcontroller',
                 'method' => 'postCart',
             ],*/
-        ],
+   /*     ],
         '/Order' => [
             'GET' => [
                 'class' => '\Controllers\OrderController',
@@ -97,8 +104,8 @@ class App
                 'class' => '\Controllers\OrderController',
                 'method' => 'getOrdersView',
                 ],
-            ],
-    ];
+            ],*/
+    //];
 
     public function run()
     {
@@ -122,9 +129,17 @@ class App
             }
         } else {
             http_response_code(404);
-            require_once './404.php';
+            require_once '../Views/404.php';
         }
 
+    }
+
+    public function addRoute(string $route, string $routeMethod, string $className, string $method)
+    {
+        $this->routes[$route][$routeMethod] = [
+               'class' => $className,
+               'method' => $method,
+        ];
     }
 
     /*    if ($requestUri === '/registration') {
