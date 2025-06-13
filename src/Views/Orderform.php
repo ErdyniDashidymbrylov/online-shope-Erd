@@ -21,7 +21,7 @@
     $productsList = [];
 
     foreach ($productsInCart as $cartItem) {
-        $productId = $cartItem['product_id'];
+        $productId = $cartItem->getProductId();
 
         $product = $productModel->getProductById($productId);
 
@@ -41,7 +41,7 @@
 
         <a href="/catalog"> В каталог</a>
 
-        <h1><?php echo "Добро пожаловать, " . $user['name'] . "!". " здесь отображаются ваши товары в корзине"; ?></h1>
+        <h1><?php echo "Добро пожаловать, " . $user->getName() . "!". " здесь отображаются ваши товары в корзине"; ?></h1>
 
 
         <?php foreach ($productsList as $productList):?>
@@ -49,23 +49,23 @@
                 <div class="col-sm-12 col-md-3">
                     <div class="card">
 
-                        <img class="product-image" src="<?php echo $productList['image_url']; ?>" alt="Card image cap">
+                        <img class="product-image" src="<?php echo $productList->getImageUrl(); ?>" alt="Card image cap">
                         <div class="card-body text-center">
-                            <h1 class="card-title "> <?php echo $productList['name']; ?></h1>
+                            <h1 class="card-title "> <?php echo $productList->getName(); ?></h1>
                         </div>
                         <?php
                         $amountInCart = 0;
                         $resultSum = 1;
                         foreach ($productsInCart as $cartItem) {
-                            if ($cartItem['product_id'] == $productList['id']) {
-                                $amountInCart = $cartItem['amount'];
-                                $resultSum = $productList['price'] * $amountInCart;
+                            if ($cartItem->getProductId() == $productList->getId()) {
+                                $amountInCart = $cartItem->getAmount();
+                                $resultSum = $productList->getPrice() * $amountInCart;
                                 break;
                             }
                         }
                         ?>
-                        <p class="card-text">  <?php echo "Товар ". $productList['name']. " в корзине: ". $amountInCart." кг"; ?></p>
-                        <p><?php echo "Товар ". $productList['name']. " на сумму: " . $resultSum. "!"; ?></p>
+                        <p class="card-text">  <?php echo "Товар ". $productList->getName(). " в корзине: ". $amountInCart." кг"; ?></p>
+                        <p><?php echo "Товар ". $productList->getName(). " на сумму: " . $resultSum. "!"; ?></p>
                     </div>
 
                 </div>

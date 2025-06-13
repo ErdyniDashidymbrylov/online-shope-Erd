@@ -14,6 +14,7 @@ class UserController
 
     private User $userModel;
 
+
     public function __construct()
     {
         $this->productModel = new Product();
@@ -105,7 +106,7 @@ class UserController
 
                 $userId = $_SESSION['userId'];
                 if ($user !== false) {
-                    if ($user['id'] !== $userId) {
+                    if ($user->getId() !== $userId) {
                         $errors['email'] = 'Этот Email уже зарегистрирован!';
                     }
                 }
@@ -176,11 +177,11 @@ class UserController
             $user = $this->userModel->selectUser($username);
 
             if (!empty($user)) {
-                $passwordDB = $user['password'];
+                $passwordDB = $user->getPassword();
 
                 if (password_verify($password, $passwordDB)) {
                     session_start();
-                    $_SESSION['userId'] = $user['id'];
+                    $_SESSION['userId'] = $user->getId();
                     // exit();
                     header("Location: /catalog");
                     exit();
@@ -239,11 +240,11 @@ class UserController
             $email = $_POST['email'];
 
 
-            if ($user['name'] !== $name) {
+            if ($user->getName() !== $name) {
                 $this->userModel->updateUser($name, $userId);
             }
 
-            if ($user['email'] !== $email) {
+            if ($user->getEmail() !== $email) {
                 $this->userModel->updateUser($email, $userId);
             }
 

@@ -29,13 +29,13 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
         <?php if(isset($errors['name'])): ?>
             <label style="color:red"><?php echo $errors['name']; ?></label>
         <?php endif; ?>
-        <input  type="text" placeholder="" name="name" id="name"  value="<?php echo $user['name'];?>">
+        <input  type="text" placeholder="" name="name" id="name"  value="<?php echo $user->getName();?>">
 
         <label for="email"><b>Email </b></label>
         <?php if(isset($errors['email'])): ?>
             <label style="color:red"><?php echo $errors['email']; ?></label>
        <?php endif; ?>
-        <input type="text" placeholder="" name="email" id="email" value="<?php echo $user['email']; ?>">
+        <input type="text" placeholder="" name="email" id="email" value="<?php echo $user->getEmail(); ?>">
 
       <!--  <label for="psw"><b>Password</b></label>
         <?php /*if(isset($errors['psw'])): */?>

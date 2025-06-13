@@ -51,8 +51,8 @@ class OrderController
               $userProducts = $this->userProductModel->selectProductByID($userId);
 
               foreach ($userProducts as $userProduct) {
-                  $productId = $userProduct['product_id'];
-                  $amount = $userProduct['amount'];
+                  $productId = $userProduct->getProductId();
+                  $amount = $userProduct->getAmount();
 
                   $this->orderProductModel->create($orderId, $productId, $amount);
               }
@@ -107,27 +107,34 @@ public function getOrdersView()
     $userId = $_SESSION['userId'];
 
     $userOrders = $this->orderModel->getAllByUserId($userId);
+     /*  echo "<pre>";
+       print_r($userOrders);
+        echo "</pre>";*/
+
 
     $newUserOrders = [];
     foreach ($userOrders as $userOrder) {
-        $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder['id']);
+        $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
+      /*  echo "<pre>";
+        print_r($orderProducts);
+        echo "</pre>";*/
 
-        $newOrderProducts = [];
+      $newOrderProducts = [];
         $sum = 0;
         foreach ($orderProducts as $orderProduct) {
 
-            $product = $this->productModel->getProductById($orderProduct['product_id']);
-            $orderProduct['name'] = $product['name'];
-            $orderProduct['price'] = $product['price'];
-            $orderProduct['totalsum'] = $orderProduct['amount'] * $orderProduct['price'];
+            $product = $this->productModel->getProductById($orderProduct->getProductId());
+            $orderProduct->setName($product->getName());
+            $orderProduct->setPrice($product->getPrice());
+            $orderProduct->setTotalsum($orderProduct->getAmount() * $orderProduct->getPrice());
 
             $newOrderProducts[] = $orderProduct;
 
-            $sum = $sum + $orderProduct['totalsum'];
+            $sum = $sum +  $orderProduct->setTotalsum($orderProduct->getAmount() * $orderProduct->getPrice());;
 
         }
-        $userOrder['total'] = $sum;
-        $userOrder['products'] = $newOrderProducts;
+        $userOrder->setTotal($sum);
+        $userOrder->setProducts($newOrderProducts);
         $newUserOrders[] = $userOrder;
 
     }

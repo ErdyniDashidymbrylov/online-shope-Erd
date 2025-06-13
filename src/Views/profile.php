@@ -43,9 +43,9 @@ echo "<p><a href='logout.php'>Выйти</a></p>";*/
     <div class="cover-photo">
         <img src="https://i.imgur.com/KykRUCV.jpeg" class="profile">
     </div>
-    <h3 class="profile-name"><?php echo "Привет, " . $user['name'] . "!";?></>
+    <h3 class="profile-name"><?php echo "Привет, " . $user->getName() . "!";?></>
     <p class="about">Вы находитесь на странице профиля</p>
-    <a href=''><button class="btn">Написать письмо <?php echo $user['email']?></button></a>
+    <a href=''><button class="btn">Написать письмо <?php echo $user->getEmail()?></button></a>
     <a href='/OrdersView'><button class="btn">Мои заказы </button></a>
     <a href='/changeprofile'><button class="btn">Редактировать профиль</button></a>
     <a href='/logout'><button class="btn">Выйти</button></a>

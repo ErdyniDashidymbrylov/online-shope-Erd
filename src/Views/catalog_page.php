@@ -10,12 +10,12 @@
             <br>
             <div class="card text-center">
                 <a href="#">
-                    <img class="card-img-top" src="<?php echo $product['image_url']; ?>" alt="Card image">
+                    <img class="card-img-top" src="<?php echo $product->getImageUrl(); ?>" alt="Card image">
                     <div class="card-body">
-                        <p class="card-text text-muted"><h2 style="color:red"><?php echo $product['name']; ?></h2></p>
-                        <a href="#"><h5 class="card-title"><?php echo $product['description']. " id продукта: ". $product['id']; ?></h5></a>
+                        <p class="card-text text-muted"><h2 style="color:red"><?php echo $product->getName(); ?></h2></p>
+                        <a href="#"><h5 class="card-title"><?php echo $product->getDescription(). " id продукта: ". $product->getId(); ?></h5></a>
                         <div class="card-footer">
-                            <?php echo $product['price']. " руб."; ?>
+                            <?php echo $product->getPrice(). " руб."; ?>
                         </div>
                     </div>
                 </a>
@@ -25,7 +25,7 @@
                 <div class="container">
                     <h3>Добавить в корзину</h3>
 
-                    <input type="hidden" placeholder="Enter Product-id" name="product_id" id="product_id" value="<?php echo $product['id']; ?>">
+                    <input type="hidden" placeholder="Enter Product-id" name="product_id" id="product_id" value="<?php echo $product->getId(); ?>">
 
                     <label for="amount"><b></b></label>
                     <?php if(isset($errors['email'])): ?>

@@ -46,35 +46,34 @@
 
     <?php foreach ($newUserOrders as $newUserOrder): ?>
         <div class="order">
-            <h2>Заказ №<?php echo $newUserOrder['id']?> </h2>
-            <p> Имя заказчика:  <?php echo $newUserOrder['contact_name'] ?></p>
-            <p> Контактный телефон: <?php echo $newUserOrder['phone'] ?></p>
-            <p> Комментарий к заказу: <?php echo $newUserOrder['comment'] ?></p>
-            <p> Адрес заказа: <?php echo $newUserOrder['address'] ?></p>
+            <h2>Заказ №<?php echo $newUserOrder->getId()?> </h2>
+            <p> Имя заказчика:  <?php echo $newUserOrder->getContactName() ?></p>
+            <p> Контактный телефон: <?php echo $newUserOrder->getPhone() ?></p>
+            <p> Комментарий к заказу: <?php echo $newUserOrder->getComment() ?></p>
+            <p> Адрес заказа: <?php echo $newUserOrder->getAddress() ?></p>
 
                    <table>
                     <thead>
                     <tr>
                         <th>Название продукта</th>
-                        <th>Изображение</th>
                         <th>Количество</th>
                         <th>Стоимость</th>
                         <th>Общая сумма</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($newUserOrder['products'] as $newOrderProduct): ?>
+                    <?php foreach ($newUserOrder->getProducts() as $newOrderProduct): ?>
                         <tr>
-                            <td><?php echo $newOrderProduct['name']?></td>
-                            <td><?php echo $newOrderProduct['amount']?></td>
-                            <td><?php echo $newOrderProduct['price']?></td>
-                            <td><?php echo $newOrderProduct['totalsum']?></td>
+                            <td><?php echo $newOrderProduct->getName()?></td>
+                            <td><?php echo $newOrderProduct->getAmount()?></td>
+                            <td><?php echo $newOrderProduct->getPrice()?></td>
+                            <td><?php echo $newOrderProduct->getTotalsum()?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
 
-                <div class="total">Общая сумма заказа: <?php echo $newUserOrder['total']?> ₽</div>
+                <div class="total">Общая сумма заказа: <?php echo $newUserOrder->getTotal()?> ₽</div>
         </div>
     <?php endforeach; ?>
 
