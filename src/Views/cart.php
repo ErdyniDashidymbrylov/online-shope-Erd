@@ -76,7 +76,7 @@ $summa = 0;
                     }
                 }
                 ?>
-                <p class="card-text">  <?php echo "Товар ". $productList->getName(). " в корзине: ". $amountInCart." кг"; ?></p>
+                <p class="card-text">  <?php echo "Товар ". $productList->getName(). " в корзине: ". $amountInCart." шт"; ?></p>
             <p><?php echo "Товар на сумму: " . $resultSum. "!"; ?></p>
                </div>
 

@@ -30,6 +30,11 @@ class UserProduct extends Model
         $stmtUpdate = $this->pdo->prepare("UPDATE user_products SET amount = :amount WHERE product_id = :product_id AND user_id = :user_id");
         $stmtUpdate->execute([':amount' => $amount, ':product_id' => $productId, ':user_id' => $userId]);
     }
+    public function DeleteOneByUserIdProductId(int $productId,int $userId): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM user_products WHERE product_id = :product_id AND user_id = :user_id");
+        $stmt->execute([':product_id' => $productId, ':user_id' => $userId]);
+    }
 
     public function selectProductByID(int $userId): array|null
     {

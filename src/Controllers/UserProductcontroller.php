@@ -40,19 +40,46 @@ class UserProductcontroller
         }
 
         $productId = $_POST['product_id'];
-        $amount = $_POST['amount'];
         $userId = $_SESSION['userId'];
 
         $productInAmount = $this->userProductModel->selectAmountProducts($userId, $productId);
 
         if (!empty($productInAmount)) {
-            $newAmount = $productInAmount + $amount;
+            $newAmount = $productInAmount + 1;
             $this->userProductModel->updateProduct($productId, $newAmount, $userId);
         } else {
+            $amount = 1;
             $this->userProductModel->insertProduct($productId, $amount, $userId);
         }
         $this->getCart();
     }
+
+    public function PostDecreaseProduct()
+    {
+        session_start();
+
+        if (!isset($_SESSION['userId'])) {
+            header("Location: /login");
+            exit();
+        }
+
+        $productId = $_POST['product_id'];
+        $userId = $_SESSION['userId'];
+        $productInAmount = $this->userProductModel->selectAmountProducts($userId, $productId);
+
+        if (!empty($productInAmount) && $productInAmount > 1) {
+            $newAmount = $productInAmount - 1;
+            $this->userProductModel->updateProduct($productId, $newAmount, $userId);
+        } else {
+            if ($productInAmount == 1){
+                $this->userProductModel->DeleteOneByUserIdProductId($productId, $userId);
+            }
+
+        }
+        $this->getCart();
+        echo $productInAmount;
+    }
+
 
     public function getCart()
     {

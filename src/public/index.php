@@ -4,55 +4,47 @@ use Controllers\Productcontroller;
 use Controllers\OrderController;
 use Controllers\UserProductcontroller;
 use Core\App;
-//require_once '../Core/App.php';
+use Core\Autoloader;
 
-$autoload = function (string $className) {
- /*   $classnamearray = explode("\\", $classname);
-    $classnamespace = $classnamearray[0];
-    $classfile = $classnamearray[count($classnamearray) - 1];*/
-    //print_r($classnamearray) ;die;
-    $path = str_replace('\\', '/', $className);
-//    $path = "../".$classnamespace."/".$classfile.".php";
-    //print_r($path);die;
-    $path = "./../".$path. ".php";
-    if (file_exists($path)) {
-        require_once $path;
-        return true;
-    }
-    return false;
-};
-spl_autoload_register($autoload);
+//require_once '../Core/App.php';
+require_once './../Core/Autoloader.php';
+
+/*$autoloader = new Autoloader;
+$autoloader->register();*/
+$path = dirname(__DIR__);
+    \Core\Autoloader::register($path);
 
 $app = new App();
 
-$app->addRoute('/registration','GET',UserController::class, 'getRegistration');
-$app->addRoute('/registration','POST',UserController::class, 'postRegistration');
+$app->get('/registration',UserController::class, 'getRegistration');
+$app->post('/registration',UserController::class, 'postRegistration');
 
-$app->addRoute('/login','GET',UserController::class, 'getLogin');
-$app->addRoute('/login','POST',UserController::class, 'postLogin');
+$app->get('/login',UserController::class, 'getLogin');
+$app->post('/login',UserController::class, 'postLogin');
 
-$app->addRoute('/logout','GET',UserController::class, 'getLogout');
+$app->get('/logout',UserController::class, 'getLogout');
 
-$app->addRoute('/profile','GET',UserController::class, 'getProfile');
+$app->get('/profile',UserController::class, 'getProfile');
 
-$app->addRoute('/changeprofile','GET',UserController::class, 'getChangeprofile');
-$app->addRoute('/changeprofile','POST',UserController::class, 'postChangeprofile');
+$app->get('/changeprofile',UserController::class, 'getChangeprofile');
+$app->post('/changeprofile',UserController::class, 'postChangeprofile');
 
-$app->addRoute('/catalog','GET',Productcontroller::class, 'getCatalog');
-$app->addRoute('/catalog','POST',Productcontroller::class, 'postCatalog');
+$app->get('/catalog',Productcontroller::class, 'getCatalog');
+$app->post('/catalog',Productcontroller::class, 'postCatalog');
 
-$app->addRoute('/catalog_page','GET',Productcontroller::class, 'getCatalogPage');
+$app->get('/catalog_page',Productcontroller::class, 'getCatalogPage');
 
-$app->addRoute('/Add_product','GET',UserProductcontroller::class, 'getAdd_product');
-$app->addRoute('/Add_product','POST',UserProductcontroller::class, 'postAdd_product');
+$app->get('/Add_product',UserProductcontroller::class, 'getAdd_product');
+$app->post('/Add_product',UserProductcontroller::class, 'postAdd_product');
+$app->post('/Decrease-product',UserProductcontroller::class, 'PostDecreaseProduct');
 
-$app->addRoute('/cart','GET',UserProductcontroller::class, 'getCart');
-$app->addRoute('/cart','POST',UserProductcontroller::class, 'postCart');
+$app->get('/cart',UserProductcontroller::class, 'getCart');
+$app->post('/cart',UserProductcontroller::class, 'postCart');
 
-$app->addRoute('/Order','GET',OrderController::class, 'getCheckoutForm');
-$app->addRoute('/Order','POST',OrderController::class, 'handleCheckoutForm');
+$app->get('/Order',OrderController::class, 'getCheckoutForm');
+$app->post('/Order',OrderController::class, 'handleCheckoutForm');
 
-$app->addRoute('/OrdersView','GET',OrderController::class, 'getOrdersView');
+$app->get('/OrdersView',OrderController::class, 'getOrdersView');
 
 $app->run();
 
