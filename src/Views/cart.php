@@ -11,12 +11,10 @@ $userModel = new \Model\User();
 $userProductModel = new \Model\UserProduct();
 $productModel = new \Model\Product();
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
 
-if (isset($_SESSION['userId'])) {
-$userId = $_SESSION['userId'];}
+$this->authService->check();
+
+$userId = $this->authService->getCurrentUserId();
 
 /*if (!isset($_SESSION['userId'])) {
     header("Location: /login");

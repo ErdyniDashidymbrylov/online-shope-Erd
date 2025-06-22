@@ -15,7 +15,7 @@ class User extends Model
         $email = $data['email'];
         $password = $data['psw'];
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (name, email, password) VALUES (:name, :email, :password)");
         $stmt->execute(params: [':name' => $name, ':email' => $email, ':password' => $password]);
 
         return ['name' => $name, 'email' => $email, 'password' => $password];
@@ -23,7 +23,7 @@ class User extends Model
 
     public function selectUser(string $email) : self|null
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
@@ -42,7 +42,7 @@ class User extends Model
 
     public function selectUserID(int $userId) : self|null
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE id = :user_id");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :user_id");
         $stmt->execute(['user_id' => $userId]);
         $user = $stmt->fetch();
 
@@ -61,7 +61,7 @@ class User extends Model
 
     public function updateUser(string $name, int $userId ) : array
     {
-        $stmtUpdateName = $this->pdo->prepare("UPDATE users SET name = :name WHERE id = $userId");
+        $stmtUpdateName = $this->pdo->prepare("UPDATE {$this->getTableName()} SET name = :name WHERE id = $userId");
         $stmtUpdateName->execute([':name' => $name]);
         return ['name' => $name, 'userId' => $userId];
     }
@@ -86,5 +86,9 @@ class User extends Model
         return $this->password;
     }
 
+    protected function getTableName(): string
+    {
+       return 'users';
+    }
 }
 

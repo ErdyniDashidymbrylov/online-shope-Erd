@@ -13,7 +13,7 @@ class Product extends Model
 
     public function getAllProducts(): array|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM products");
+        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()}");
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $products = [];
         if ($results === false) {
@@ -37,7 +37,7 @@ class Product extends Model
     {
 
 
-        $stmtprod = $this->pdo->prepare("SELECT * FROM products WHERE id = :product_id");
+        $stmtprod = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :product_id");
         $stmtprod->execute(['product_id' => $productId]);
         $result = $stmtprod->fetch(PDO::FETCH_ASSOC);
 
@@ -82,6 +82,9 @@ class Product extends Model
     }
 
 
-
+    protected function getTableName(): string
+    {
+       return 'products';
+    }
 }
 

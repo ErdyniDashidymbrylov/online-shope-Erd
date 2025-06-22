@@ -7,18 +7,22 @@ use Model\Order;
 use Model\Product;
 use Model\User;
 use Model\UserProduct;
+use Service\AuthService;
 
-class UserController
+class UserController extends BaseController
+
 {
-    private Product $productModel;
+    protected Product $productModel;
 
-    private User $userModel;
+    protected User $userModel;
+    private AuthService $authService;
 
 
     public function __construct()
     {
         $this->productModel = new Product();
         $this->userModel = new User();
+        $this->authService = new AuthService();
     }
 
     private function validateRegistration(array $data): array
@@ -104,7 +108,7 @@ class UserController
 
                 $user = $this->userModel->selectUser($email);
 
-                $userId = $_SESSION['userId'];
+                $userId = $this->authService->getCurrentUserId();
                 if ($user !== false) {
                     if ($user->getId() !== $userId) {
                         $errors['email'] = 'Этот Email уже зарегистрирован!';
@@ -165,44 +169,30 @@ class UserController
 
     public function postLogin()
     {
-        global $users, $userModel;
 
+        $data = $_POST;
         $errors = $this->validateName($_POST);
+
 
         if (empty($errors)) {
 
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $result = $this->authService->auth($_POST['username'], $_POST['password']);
 
-            $user = $this->userModel->selectUser($username);
-
-            if (!empty($user)) {
-                $passwordDB = $user->getPassword();
-
-                if (password_verify($password, $passwordDB)) {
-                    session_start();
-                    $_SESSION['userId'] = $user->getId();
-                    // exit();
-                    header("Location: /catalog");
-                    exit();
-                    //require_once './catalog.php';
-                } else {
-
-                    $errors['username'] = 'username or password is incorrect!';
-                }
+            if ($result === true) {
+                header("Location: /catalog");
+                exit();
             } else {
-                $errors['username'] = 'Пользователь с таким логином не существует!';
+                $errors['autorization'] ='email или пароль неверный' ;
             }
-        } else {
-            $this->getLogin();
         }
+        $this->getLogin();
 
     }
 
-    public function getLogout()
+ /*   public function getLogout()
     {
         require_once './logout.php';
-    }
+    }*/
 
     public function getProfile()
     {
@@ -219,16 +209,12 @@ class UserController
     {
 
 
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        if (!isset($_SESSION['userId'])) {
+        if ($this->authService->check() === false) {
             header("Location: /login");
             exit();
         }
 
-        $userId = $_SESSION['userId'];
+        $userId = $this->authService->getCurrentUserId();
 
         $user = $this->userModel->selectUserID($userId);
 
@@ -251,6 +237,12 @@ class UserController
             header("Location: /profile");
             exit;
         }
+    }
+    public function logout()
+    {
+        $this->authService->logout();
+        header("Location: /login");
+        exit;
     }
 }
  

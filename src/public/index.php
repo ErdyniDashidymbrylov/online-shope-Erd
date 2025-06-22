@@ -3,6 +3,7 @@ use Controllers\UserController;
 use Controllers\Productcontroller;
 use Controllers\OrderController;
 use Controllers\UserProductcontroller;
+use Controllers\FeedbackController;
 use Core\App;
 use Core\Autoloader;
 
@@ -22,7 +23,7 @@ $app->post('/registration',UserController::class, 'postRegistration');
 $app->get('/login',UserController::class, 'getLogin');
 $app->post('/login',UserController::class, 'postLogin');
 
-$app->get('/logout',UserController::class, 'getLogout');
+$app->get('/logout',UserController::class, 'logout');
 
 $app->get('/profile',UserController::class, 'getProfile');
 
@@ -36,7 +37,9 @@ $app->get('/catalog_page',Productcontroller::class, 'getCatalogPage');
 
 $app->get('/Add_product',UserProductcontroller::class, 'getAdd_product');
 $app->post('/Add_product',UserProductcontroller::class, 'postAdd_product');
-$app->post('/Decrease-product',UserProductcontroller::class, 'PostDecreaseProduct');
+$app->post('/Decrease-product',UserProductcontroller::class, 'postDecreaseProduct');
+$app->post('/Feedback',FeedbackController::class, 'postFeedback');
+$app->post('/Newfeedback',FeedbackController::class, 'handleFeedback');
 
 $app->get('/cart',UserProductcontroller::class, 'getCart');
 $app->post('/cart',UserProductcontroller::class, 'postCart');

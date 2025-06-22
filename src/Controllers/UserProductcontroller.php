@@ -8,19 +8,25 @@ require_once '../Model/Product.php';*/
 use Model\Product;
 use Model\User;
 use Model\UserProduct;
+use Service\AuthService;
+use Service\CartService;
 
-class UserProductcontroller
+class UserProductcontroller extends BaseController
 {
-    private Product $productModel;
+    protected Product $productModel;
 
-    private User $userModel;
-    private UserProduct $userProductModel;
+    protected User $userModel;
+    protected UserProduct $userProductModel;
+    private AuthService $authService;
+    private CartService $cartService;
 
     public function __construct()
     {
         $this->productModel = new Product();
         $this->userModel = new User();
         $this->userProductModel = new UserProduct();
+        $this->authService = new AuthService();
+        $this->cartService = new CartService();
     }
 
     public function getAdd_product()
@@ -32,52 +38,36 @@ class UserProductcontroller
     {
 
 
-        session_start();
 
-        if (!isset($_SESSION['userId'])) {
+        if ($this->authService->check() === false) {
             header("Location: /login");
             exit();
         }
 
         $productId = $_POST['product_id'];
-        $userId = $_SESSION['userId'];
+        $userId = $this->authService->getCurrentUserId();
+        $amount = 1;
 
-        $productInAmount = $this->userProductModel->selectAmountProducts($userId, $productId);
+        $this->cartService->addProduct($productId, $amount, $userId);
 
-        if (!empty($productInAmount)) {
-            $newAmount = $productInAmount + 1;
-            $this->userProductModel->updateProduct($productId, $newAmount, $userId);
-        } else {
-            $amount = 1;
-            $this->userProductModel->insertProduct($productId, $amount, $userId);
-        }
         $this->getCart();
     }
 
-    public function PostDecreaseProduct()
+    public function postDecreaseProduct()
     {
-        session_start();
 
-        if (!isset($_SESSION['userId'])) {
+        if ($this->authService->check() === false) {
             header("Location: /login");
             exit();
         }
 
         $productId = $_POST['product_id'];
-        $userId = $_SESSION['userId'];
-        $productInAmount = $this->userProductModel->selectAmountProducts($userId, $productId);
+        $userId = $this->authService->getCurrentUserId();
+        $amount = 1;
 
-        if (!empty($productInAmount) && $productInAmount > 1) {
-            $newAmount = $productInAmount - 1;
-            $this->userProductModel->updateProduct($productId, $newAmount, $userId);
-        } else {
-            if ($productInAmount == 1){
-                $this->userProductModel->DeleteOneByUserIdProductId($productId, $userId);
-            }
+        $this->cartService->decreaseProduct($productId, $amount, $userId);
 
-        }
         $this->getCart();
-        echo $productInAmount;
     }
 
 

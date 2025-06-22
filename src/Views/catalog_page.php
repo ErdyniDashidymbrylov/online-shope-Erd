@@ -41,6 +41,16 @@
 
             </form>
 
+            <form action="/Feedback" method="POST">
+                <div class="container">
+                    <input type="hidden" name="product_id" id="product_id" value="<?php echo $product->getId(); ?>">
+                    <button type="submit" class="registerbtn">о продукте</button>
+                </div>
+
+                <hr>
+
+            </form>
+
         <?php endforeach;?>
 
         <style>

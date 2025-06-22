@@ -34,7 +34,7 @@ class Order extends Model
     }
     public function create(string $name, string $phone, string $address, string $comment, int $userId)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO orders (
+        $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (
                     contact_name, phone, address, comment, user_id) VALUES (:contact_name, :phone, :address, :comment, :user_id) RETURNING id");
         $stmt->execute(['contact_name' => $name, 'phone' => $phone, 'address' => $address, 'comment' => $comment, 'user_id' => $userId]);
 
@@ -45,7 +45,7 @@ class Order extends Model
     public function getAllByUserId(int $userId): array|null
     {
 
-        $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE user_id = :user_id");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE user_id = :user_id");
         $stmt->execute([':user_id' => $userId]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $orderProducts = [];
@@ -103,5 +103,8 @@ class Order extends Model
     }
 
 
-
+    protected function getTableName(): string
+    {
+       return 'orders';
+    }
 }

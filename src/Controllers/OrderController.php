@@ -6,13 +6,17 @@ use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
 use Model\UserProduct;
+use Service\AuthService;
+use Service\OrderService;
 
-class OrderController
+class OrderController extends BaseController
 {
     private UserProduct $userProductModel;
     private Order $orderModel;
     private Product $productModel;
     private OrderProduct $orderProductModel;
+    private AuthService $authService;
+    private OrderService $orderService;
 
     public function __construct()
     {
@@ -20,6 +24,8 @@ class OrderController
         $this->orderProductModel = new OrderProduct();
         $this->productModel = new Product();
         $this->userProductModel = new UserProduct();
+        $this->authService = new AuthService();
+        $this->orderService = new OrderService();
     }
 
    public function getCheckoutForm()
@@ -29,10 +35,7 @@ class OrderController
    public function handleCheckoutForm()
    {
 
-      if (session_status() !== PHP_SESSION_ACTIVE) {
-             session_start();
-       }
-       if (!isset($_SESSION['userId'])) {
+       if ($this->authService->check() === false) {
            header("Location: /login");
            exit();
        }
@@ -44,7 +47,7 @@ class OrderController
               $contactPhone = $_POST['phone'];
               $address = $_POST['address'];
               $comment = $_POST['comment'];
-              $userId = $_SESSION['userId'];
+              $userId = $this->authService->getCurrentUserId();
 
               $orderId = $this->orderModel->create($contactName, $contactPhone, $address, $comment,$userId);
 
@@ -95,49 +98,18 @@ private function validateForm($data)
 public function getOrdersView()
 {
 
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
 
-    if (!isset($_SESSION['userId'])) {
+    if ($this->authService->check() ===false) {
         header("Location: /login");
         exit();
     }
 
-    $userId = $_SESSION['userId'];
+    $userId = $this->authService->getCurrentUserId();
 
-    $userOrders = $this->orderModel->getAllByUserId($userId);
-     /*  echo "<pre>";
-       print_r($userOrders);
-        echo "</pre>";*/
+    $newUserOrders = $this->orderService->addOrder($userId);
 
 
-    $newUserOrders = [];
-    foreach ($userOrders as $userOrder) {
-        $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
-      /*  echo "<pre>";
-        print_r($orderProducts);
-        echo "</pre>";*/
 
-      $newOrderProducts = [];
-        $sum = 0;
-        foreach ($orderProducts as $orderProduct) {
-
-            $product = $this->productModel->getProductById($orderProduct->getProductId());
-            $orderProduct->setName($product->getName());
-            $orderProduct->setPrice($product->getPrice());
-            $orderProduct->setTotalsum($orderProduct->getAmount() * $orderProduct->getPrice());
-
-            $newOrderProducts[] = $orderProduct;
-
-            $sum = $sum +  $orderProduct->setTotalsum($orderProduct->getAmount() * $orderProduct->getPrice());;
-
-        }
-        $userOrder->setTotal($sum);
-        $userOrder->setProducts($newOrderProducts);
-        $newUserOrders[] = $userOrder;
-
-    }
     require_once '../Views/OrdersView.php';
 }
 

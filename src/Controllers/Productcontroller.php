@@ -6,14 +6,17 @@ namespace Controllers;
 
 use Model\Order;
 use Model\Product;
+use Service\AuthService;
 
-class Productcontroller
+class Productcontroller extends BaseController
 {
-    private Product $productModel;
+    protected Product $productModel;
+    private AuthService $authService;
 
     public function __construct()
     {
         $this->productModel = new Product();
+        $this->authService = new AuthService();
     }
     function validateAddProduct(array $data) : array
     {
@@ -43,10 +46,9 @@ class Productcontroller
     public function getCatalog()
     {
         global $products, $productModel;
-        session_start();
 
 
-        if (isset($_SESSION['userId'])) {
+        if ($this->authService->check()) {
 
             $productsInCatalog = $this->productModel->getAllProducts();
             require_once '../Views/catalog_page.php';
