@@ -32,7 +32,7 @@ class OrderController extends BaseController
    {
        require_once "../Views/Orderform.php";
    }
-   public function handleCheckoutForm()
+   public function handleCheckoutForm() // перенести в сервис
    {
 
        if ($this->authService->check() === false) {
@@ -63,7 +63,7 @@ class OrderController extends BaseController
                $this->userProductModel->deleteByUserId($userId);
            }
             else {
-                require_once "../Views/Orderform.php";
+                $this->getCheckoutForm();
             }
    }
 private function validateForm($data)
@@ -96,21 +96,52 @@ private function validateForm($data)
    }
 
 public function getOrdersView()
-{
+    {
 
 
-    if ($this->authService->check() ===false) {
-        header("Location: /login");
-        exit();
+        if ($this->authService->check() === false) {
+            header("Location: /login");
+            exit();
+        }
+
+        $userId = $this->authService->getCurrentUserId();
+
+        $userOrders = $this->orderModel->getAllByUserId($userId);
+        $newUserOrders = [];
+        foreach ($userOrders as $userOrder) {
+            $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
+
+            $newOrderProducts = [];
+            $sum = 0;
+            foreach ($orderProducts as $orderProduct) {
+
+                $product = $this->productModel->getProductById($orderProduct->getProductId());
+                $orderProduct->setName($product->getName());
+                $orderProduct->setPrice($product->getPrice());
+                $totalSumForProduct = $orderProduct->getAmount() * $orderProduct->getPrice();
+                $orderProduct->setTotalsum($totalSumForProduct);
+
+                $newOrderProducts[] = $orderProduct;
+                $sum += $totalSumForProduct;
+            }
+                $userOrder->setTotal($sum);
+                $userOrder->setProducts($newOrderProducts);
+
+                $newUserOrders[] = $userOrder;
+
+
+        } require_once '../Views/OrdersView.php';
     }
-
-    $userId = $this->authService->getCurrentUserId();
-
-    $newUserOrders = $this->orderService->addOrder($userId);
-
-
-
-    require_once '../Views/OrdersView.php';
 }
 
-}
+
+
+
+
+
+
+
+
+
+
+
