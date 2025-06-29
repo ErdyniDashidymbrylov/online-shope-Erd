@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Model\Feedback;
 use Model\Product;
+use Request\FeedbackRequest;
 use Service\AuthService;
 
 class FeedbackController extends BaseController
@@ -20,10 +21,10 @@ class FeedbackController extends BaseController
         $this->productModel = new Product();
         $this->authService = new AuthService();
     }
-    public function postFeedback()
+    public function postFeedback(FeedbackRequest $request)
     {
 
-        $productId = $_POST['product_id'];
+        $productId = $request->getProductId();
 
         $productFeedbacks = $this->feedbackModel->getAllFeedbacks();
 
@@ -40,15 +41,15 @@ class FeedbackController extends BaseController
 
     }
 
-    public function handleFeedback()
+    public function handleFeedback(FeedbackRequest $request)
     {
         if ($this->authService->check() === false) {
             header("Location: /login");
             exit();
         }
-        $productId = $_POST['product_id'];
-        $comment = $_POST['comment'];
-        $score = $_POST['score'];
+        $productId =$request->getProductId();
+        $comment = $request->getComment();
+        $score = $request->getScore();
         $date = date("Y-m-d H:i:s");
         $userId = $this->authService->getCurrentUserId();
 

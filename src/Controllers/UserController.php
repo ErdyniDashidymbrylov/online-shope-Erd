@@ -7,6 +7,9 @@ use Model\Order;
 use Model\Product;
 use Model\User;
 use Model\UserProduct;
+use Request\ChangeProfileRequest;
+use Request\LoginRequest;
+use Request\RegistrateRequest;
 use Service\AuthService;
 
 class UserController extends BaseController
@@ -25,51 +28,7 @@ class UserController extends BaseController
         $this->authService = new AuthService();
     }
 
-    private function validateRegistration(array $data): array
-    {
-        $errors = [];
 
-        if (isset($data['name'])) {
-            $name = $data['name'];
-            if (strlen($name) < 2) {
-                $errors['name'] = "Имя обязательно для заполнения.";
-            }
-        } else {
-            $errors['name'] = "Имя должно быть заполнено.";
-        }
-
-        if (isset($data['email'])) {
-            $email = $data['email'];
-            if (strlen($email) < 3) {
-                $errors['email'] = "Email не может содержать меньше 3 - х символов.";
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = "Некорректный формат email.";
-            } else {
-
-                $row = $this->userModel->selectUser($email);
-                if ($row > 0) {
-                    $errors['email'] = 'Этот Email уже зарегистрирован!';
-                }
-            }
-        } else {
-            $errors['email'] = "Емаил должен быть заполнен.";
-        }
-
-        if (isset($data['psw'])) {
-            $password = $data['psw'];
-            if (strlen($password) < 2) {
-                $errors['psw'] = "Пароль не может содержать меньше 2 - х символов.";
-            }
-            $passwordRepeat = $data['psw-repeat'];
-            if ($password !== $passwordRepeat) {
-                $errors['psw-repeat'] = "Пароли не совпадают.";
-            }
-        } else {
-            $errors['psw'] = "Пароль должен быть заполнен.";
-        }
-
-        return $errors;
-    }
 
 
     /*    public function validateName(array $data): array
@@ -84,61 +43,29 @@ class UserController extends BaseController
             return $errors;
         }*/
 
-    public function validateChangeProfile(array $data): array
-    {
-        $errors = [];
 
-        if (isset($data['name'])) {
-            $name = $data['name'];
-            if (strlen($name) < 2) {
-                $errors['name'] = "Имя обязательно для заполнения.";
-            }
-        } else {
-            $errors['name'] = "Имя должно быть заполнено.";
-        }
-
-        if (isset($data['email'])) {
-            $email = $data['email'];
-            if (strlen($email) < 3) {
-                $errors['email'] = "Email не может содержать меньше 3 - х символов.";
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = "Некорректный формат email.";
-            } else {
-
-
-                $user = $this->userModel->selectUser($email);
-
-                $userId = $this->authService->getCurrentUserId();
-                if ($user !== false) {
-                    if ($user->getId() !== $userId) {
-                        $errors['email'] = 'Этот Email уже зарегистрирован!';
-                    }
-                }
-            }
-        }
-        return $errors;
-    }
 
     public function getRegistration()
     {
         require_once '../Views/registrationform.php';
     }
 
-    public function postRegistration()
+    public function postRegistration(RegistrateRequest $request)
     {
 
 
-        $validationErrors = $this->validateRegistration($_POST);
+        $validationErrors = $request->validateRegistration();
         if (empty($validationErrors)) {
 
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $password = $_POST['psw'];
-            $passwordRepeat = $_POST['psw-repeat'];
+            $name = $request->getName();
+            $email = $request->getEmail();
+            $password = $request->getPassword();
+            $passwordRepeat = $request->getPasswordRepeat();
 
-            $insertUser = $this->userModel->insertUser($_POST);
 
-            $selectUser = $this->userModel->selectUser($email);
+            $insertUser = $this->userModel->insertUser($request->getName(),$request->getEmail(),$request->getPassword());
+
+            $selectUser = $this->userModel->selectUser($request->getEmail());
 
 
             $this->getLogin();
@@ -155,28 +82,17 @@ class UserController extends BaseController
         require_once '../Views/login_form.php';
     }
 
-    private function validateName($data)
-    {
-        $errors = [];
-        if (empty($data['username'])) {
-            $errors['username'] = "Username обязательно для заполнения";
-        }
-        if (empty($data['password'])) {
-            $errors['password'] = 'Поле password обязательно для заполнения';
-        }
-        return $errors;
-    }
 
-    public function postLogin()
+
+    public function postLogin(LoginRequest $request)
     {
 
-        $data = $_POST;
-        $errors = $this->validateName($_POST);
+        $errors = $request->validateName();
 
 
         if (empty($errors)) {
 
-            $result = $this->authService->auth($_POST['username'], $_POST['password']);
+            $result = $this->authService->auth($request->getUserName(), $request->getPassword());
 
             if ($result === true) {
                 header("Location: /catalog");
@@ -205,7 +121,7 @@ class UserController extends BaseController
 
     }
 
-    public function postChangeProfile()
+    public function postChangeProfile(ChangeProfileRequest $request)
     {
 
 
@@ -218,12 +134,12 @@ class UserController extends BaseController
 
         $user = $this->userModel->selectUserID($userId);
 
-        $validationErrors = $this->validateChangeProfile($_POST);
+        $validationErrors = $request->validateChangeProfile();
 
         if (empty($validationErrors)) {
 
-            $name = $_POST['name'];
-            $email = $_POST['email'];
+            $name = $request->getName();
+            $email = $request->getEmail();
 
 
             if ($user->getName() !== $name) {

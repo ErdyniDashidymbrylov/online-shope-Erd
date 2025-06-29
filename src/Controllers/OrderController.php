@@ -2,10 +2,12 @@
 
 namespace Controllers;
 
+use DTO\OrderCreateDTO;
 use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
 use Model\UserProduct;
+use Request\OrderRequest;
 use Service\AuthService;
 use Service\OrderService;
 
@@ -32,7 +34,7 @@ class OrderController extends BaseController
    {
        require_once "../Views/Orderform.php";
    }
-   public function handleCheckoutForm() // перенести в сервис
+   public function handleCheckoutForm(OrderRequest $request) // перенести в сервис
    {
 
        if ($this->authService->check() === false) {
@@ -40,60 +42,37 @@ class OrderController extends BaseController
            exit();
        }
 
-       $errors = $this->validateForm($_POST);
+       $errors = $request->validateForm();
 
-           if (empty($errors)) {
-              $contactName = $_POST['contact_name'];
-              $contactPhone = $_POST['phone'];
-              $address = $_POST['address'];
-              $comment = $_POST['comment'];
-              $userId = $this->authService->getCurrentUserId();
+       if (empty($errors)) {
+           $contactName = $request->getContactName();
+           $contactPhone = $request->getPhone();
+           $address = $request->getAddress();
+           $comment = $request->getComment();
+           $userId = $this->authService->getCurrentUserId();
 
-              $orderId = $this->orderModel->create($contactName, $contactPhone, $address, $comment,$userId);
+           $dto = new OrderCreateDTO($contactName, $contactPhone, $address, $comment, $userId);
 
-              $userProducts = $this->userProductModel->selectProductByID($userId);
+           $this->orderService->createOrder($dto);
 
-              foreach ($userProducts as $userProduct) {
-                  $productId = $userProduct->getProductId();
-                  $amount = $userProduct->getAmount();
+           /*        $orderId = $this->orderModel->create($contactName, $contactPhone, $address, $comment,$userId);
 
-                  $this->orderProductModel->create($orderId, $productId, $amount);
-              }
+                   $userProducts = $this->userProductModel->selectProductByID($userId);
 
-               $this->userProductModel->deleteByUserId($userId);
-           }
-            else {
-                $this->getCheckoutForm();
-            }
-   }
-private function validateForm($data)
-   {
-       $errors = [];
-       if (isset($data['contact_name'])) {
-           $name = $data['contact_name'];
-           if (strlen($name) < 2) {
-               $errors['contact_name'] = "Имя обязательно для заполнения.";
-           }
-       } else {
-           $errors['contact_name'] = "Имя должно быть заполнено.";
-       }
+                   foreach ($userProducts as $userProduct) {
+                       $productId = $userProduct->getProductId();
+                       $amount = $userProduct->getAmount();
 
-       if (isset($data['phone'])) {
-           $phone = $data['phone'];
-           if (strlen($phone) < 10) {
-               $errors['phone'] = "телефон не может содержать меньше 11 символов.";
-           }
-       }
-       if (isset($data['address'])) {
-           $address = $data['address'];
-           if (strlen($address) < 3) {
-               $errors['address'] = "адрес не может содержать меньше 3 символов.";
+                       $this->orderProductModel->create($orderId, $productId, $amount);
+                   }
+
+                    $this->userProductModel->deleteByUserId($userId);*/
+                }
+       else {
+               $this->getCheckoutForm();
            }
        }
 
-           return $errors;
-
-   }
 
 public function getOrdersView()
     {

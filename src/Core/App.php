@@ -119,11 +119,18 @@ class App
 
                 $class = $handler['class'];
                 $method = $handler['method'];
-
+                $requestClass  =$handler['request'];
+                $controller = new $class();
                 //require_once "../Controllers/$class.php";
 
-                $controller = new $class();
-                $controller->$method();
+                if ($requestClass !== null) {
+                    $request = new $requestClass($_POST);
+                    $controller->$method($request);
+                }
+                else {
+                    $controller->$method();
+                }
+
             } else {
                 echo "$requestMethod для адреса $requestUri не поддерживается!";
             }
@@ -142,18 +149,20 @@ class App
         ];
     }*/
 
-    public function get(string $route, string $className, string $method)
+    public function get(string $route, string $className, string $method,string $requestClass = null)
     {
         $this->routes[$route]['GET'] = [
             'class' => $className,
             'method' => $method,
+            'request' => $requestClass
         ];
     }
-    public function post(string $route, string $className, string $method)
+    public function post(string $route, string $className, string $method, string $requestClass  = null)
     {
         $this->routes[$route]['POST'] = [
             'class' => $className,
             'method' => $method,
+            'request' => $requestClass,
         ];
     }
     /*    if ($requestUri === '/registration') {

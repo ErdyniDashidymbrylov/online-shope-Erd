@@ -8,6 +8,7 @@ require_once '../Model/Product.php';*/
 use Model\Product;
 use Model\User;
 use Model\UserProduct;
+use Request\AddProductRequest;
 use Service\AuthService;
 use Service\CartService;
 
@@ -34,7 +35,7 @@ class UserProductcontroller extends BaseController
         require_once '../Views/add_product_form.php';
     }
 
-    public function postAdd_product()
+    public function postAdd_product(AddProductRequest $request)
     {
 
 
@@ -44,7 +45,7 @@ class UserProductcontroller extends BaseController
             exit();
         }
 
-        $productId = $_POST['product_id'];
+        $productId = $request->getProductId();
         $userId = $this->authService->getCurrentUserId();
         $amount = 1;
 
@@ -53,7 +54,7 @@ class UserProductcontroller extends BaseController
         $this->getCart();
     }
 
-    public function postDecreaseProduct()
+    public function postDecreaseProduct(AddProductRequest $request)
     {
 
         if ($this->authService->check() === false) {
@@ -61,7 +62,7 @@ class UserProductcontroller extends BaseController
             exit();
         }
 
-        $productId = $_POST['product_id'];
+        $productId = $request->getProductId();
         $userId = $this->authService->getCurrentUserId();
         $amount = 1;
 
@@ -73,6 +74,55 @@ class UserProductcontroller extends BaseController
 
     public function getCart()
     {
+
+        /*$userModel = new \Model\User();
+        $userProductModel = new \Model\UserProduct();
+        $userId = $_SESSION['userId'];
+        $user = $userModel->selectUserID($userId);
+        $productsInCart =$userProductModel->selectProductByID($userId);*/
+        /*$UserProductcontroller = new \Controllers\UserProductcontroller();
+        $UserProductcontroller->postCart();
+        */
+   /*     $userModel = new \Model\User();
+        $userProductModel = new \Model\UserProduct();
+        $productModel = new \Model\Product();*/
+
+
+        $this->authService->check();
+
+        $userId = $this->authService->getCurrentUserId();
+
+        /*if (!isset($_SESSION['userId'])) {
+            header("Location: /login");
+            exit();
+        }
+
+        $userId = $_SESSION['userId'];*/
+
+//$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
+
+        $user = $this->userModel->selectUserID($userId);
+
+        $productsInCart = $this->userProductModel->selectProductByID($userId);
+
+        $productsList = [];
+        /*if (!isset($productModel)) {
+            $productModel = new \Model\Product();
+        }*/
+
+        foreach ($productsInCart as $cartItem) {
+            $productId = $cartItem->getProductId();
+
+            $product = $this->productModel->getProductById($productId);
+
+            if ($product) {
+                $productsList[] = $product;
+            }
+        }
+
+        $summa = 0;
+
+
         require_once '../Views/cart.php';
     }
 

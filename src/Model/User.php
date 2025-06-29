@@ -9,11 +9,9 @@ class User extends Model
     private string $email;
     private string $password;
 
-    public function insertUser(array $data) : array
+    public function insertUser(string $name, string $email, string $password) : array
     {
-        $name = $data['name'];
-        $email = $data['email'];
-        $password = $data['psw'];
+
         $password = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (name, email, password) VALUES (:name, :email, :password)");
         $stmt->execute(params: [':name' => $name, ':email' => $email, ':password' => $password]);
