@@ -4,19 +4,18 @@ namespace Controllers;
 //require_once "../Model/Product.php";
 
 
-use Model\Order;
 use Model\Product;
-use Service\AuthService;
+use Service\Auth\AuthSessionService;
 
 class Productcontroller extends BaseController
 {
     protected Product $productModel;
-    private AuthService $authService;
+    private AuthSessionService $authService;
 
     public function __construct()
     {
         $this->productModel = new Product();
-        $this->authService = new AuthService();
+        $this->authService = new AuthSessionService();
     }
     function validateAddProduct(array $data) : array
     {

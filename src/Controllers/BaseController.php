@@ -2,10 +2,17 @@
 
 namespace Controllers;
 
-use Model\User;
+use Service\Auth\AuthSessionService;
+use Service\Auth\AuthCookieService;
 
-class BaseController
+
+abstract class BaseController
 {
+    protected AuthSessionService $authSessionService;
+    public function __construct()
+    {
+        $this->authSessionService = new AuthSessionService();
+    }
 
 
 }

@@ -3,14 +3,12 @@ namespace Controllers;
 
 //require_once '../Model/User.php';
 
-use Model\Order;
 use Model\Product;
 use Model\User;
-use Model\UserProduct;
 use Request\ChangeProfileRequest;
 use Request\LoginRequest;
 use Request\RegistrateRequest;
-use Service\AuthService;
+use Service\Auth\AuthSessionService;
 
 class UserController extends BaseController
 
@@ -18,14 +16,14 @@ class UserController extends BaseController
     protected Product $productModel;
 
     protected User $userModel;
-    private AuthService $authService;
+    private AuthSessionService $authService;
 
 
     public function __construct()
     {
         $this->productModel = new Product();
         $this->userModel = new User();
-        $this->authService = new AuthService();
+        $this->authService = new AuthSessionService();
     }
 
 
@@ -56,12 +54,6 @@ class UserController extends BaseController
 
         $validationErrors = $request->validateRegistration();
         if (empty($validationErrors)) {
-
-            $name = $request->getName();
-            $email = $request->getEmail();
-            $password = $request->getPassword();
-            $passwordRepeat = $request->getPasswordRepeat();
-
 
             $insertUser = $this->userModel->insertUser($request->getName(),$request->getEmail(),$request->getPassword());
 

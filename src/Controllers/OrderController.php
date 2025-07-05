@@ -8,7 +8,7 @@ use Model\OrderProduct;
 use Model\Product;
 use Model\UserProduct;
 use Request\OrderRequest;
-use Service\AuthService;
+use Service\Auth\AuthSessionService;
 use Service\OrderService;
 
 class OrderController extends BaseController
@@ -17,7 +17,7 @@ class OrderController extends BaseController
     private Order $orderModel;
     private Product $productModel;
     private OrderProduct $orderProductModel;
-    private AuthService $authService;
+    private AuthSessionService $authService;
     private OrderService $orderService;
 
     public function __construct()
@@ -26,7 +26,7 @@ class OrderController extends BaseController
         $this->orderProductModel = new OrderProduct();
         $this->productModel = new Product();
         $this->userProductModel = new UserProduct();
-        $this->authService = new AuthService();
+        $this->authService = new AuthSessionService();
         $this->orderService = new OrderService();
     }
 

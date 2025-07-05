@@ -9,7 +9,7 @@ use Model\Product;
 use Model\User;
 use Model\UserProduct;
 use Request\AddProductRequest;
-use Service\AuthService;
+use Service\Auth\AuthSessionService;
 use Service\CartService;
 
 class UserProductcontroller extends BaseController
@@ -18,7 +18,7 @@ class UserProductcontroller extends BaseController
 
     protected User $userModel;
     protected UserProduct $userProductModel;
-    private AuthService $authService;
+    private AuthSessionService $authService;
     private CartService $cartService;
 
     public function __construct()
@@ -26,7 +26,7 @@ class UserProductcontroller extends BaseController
         $this->productModel = new Product();
         $this->userModel = new User();
         $this->userProductModel = new UserProduct();
-        $this->authService = new AuthService();
+        $this->authService = new AuthSessionService();
         $this->cartService = new CartService();
     }
 

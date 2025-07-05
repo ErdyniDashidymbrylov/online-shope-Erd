@@ -5,21 +5,21 @@ namespace Controllers;
 use Model\Feedback;
 use Model\Product;
 use Request\FeedbackRequest;
-use Service\AuthService;
+use Service\Auth\AuthSessionService;
 
 class FeedbackController extends BaseController
 {
 
     private Feedback $feedbackModel;
     private Product $productModel;
-    private AuthService $authService;
+    private AuthSessionService $authService;
 
     public function __construct()
     {
 
         $this->feedbackModel = new Feedback();
         $this->productModel = new Product();
-        $this->authService = new AuthService();
+        $this->authService = new AuthSessionService();
     }
     public function postFeedback(FeedbackRequest $request)
     {
