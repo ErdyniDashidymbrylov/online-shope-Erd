@@ -101,9 +101,9 @@ class UserProductcontroller extends BaseController
 
 //$pdo = new PDO('pgsql:host=postgres;port=5432;dbname=testdb', 'user', '123');
 
-        $user = $this->userModel->selectUserID($userId);
+        $user = User::selectUserID($userId);
 
-        $productsInCart = $this->userProductModel->selectProductByID($userId);
+        $productsInCart = userProduct::selectProductByID($userId);
 
         $productsList = [];
         /*if (!isset($productModel)) {
@@ -113,7 +113,7 @@ class UserProductcontroller extends BaseController
         foreach ($productsInCart as $cartItem) {
             $productId = $cartItem->getProductId();
 
-            $product = $this->productModel->getProductById($productId);
+            $product = Product::getProductById($productId);
 
             if ($product) {
                 $productsList[] = $product;

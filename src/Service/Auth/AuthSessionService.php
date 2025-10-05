@@ -12,10 +12,16 @@ class AuthSessionService implements AuthInterface
     {
         $this->userModel = new User();
     }
+    private function startSession(): void
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+    }
     public function auth(string $email, string $password): bool
     {
-
-        $user = $this->userModel->selectUser($email);
+       // throw new \AssertionError('asd');
+        $user = User::selectUser($email);
         if (!$user) {
             return false;
         } else {
@@ -61,11 +67,6 @@ class AuthSessionService implements AuthInterface
         session_destroy();
     }
 
-    private function startSession(): void
-    {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-    }
+
 
 }

@@ -1,0 +1,97 @@
+2025-08-04 12:17:30 | Message: asd | File: /var/www/html/src/Core/App.php | Line: 139
+2025-08-04 12:19:59 | Message: asd | File: /var/www/html/src/Controllers/UserController.php | Line: 83
+2025-08-04 12:22:45 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-04 12:31:00 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:29:27 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:30:03 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:30:08 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:30:56 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:00 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:07 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:11 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:23 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:28 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:49 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 03:31:54 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 05:51:12 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 05:51:15 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-10 05:51:23 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-11 11:45:09 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+2025-08-13 12:10:12 | 2025-08-13 12:10:12 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-13 12:10:30 | 2025-08-13 12:10:30 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-13 12:10:37 | 2025-08-13 12:10:37 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-13 12:10:53 | 2025-08-13 12:10:53 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:00:14 | 2025-08-14 12:00:14 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:29:33 | 2025-08-14 12:29:33 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:29:41 | 2025-08-14 12:29:41 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:29:52 | 2025-08-14 12:29:52 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:30:02 | 2025-08-14 12:30:02 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:30:05 | 2025-08-14 12:30:05 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:30:09 | 2025-08-14 12:30:09 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:31:05 | 2025-08-14 12:31:05 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:31:12 | 2025-08-14 12:31:12 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:31:17 | 2025-08-14 12:31:17 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:37:24 | 2025-08-14 12:37:24 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-14 12:37:28 | 2025-08-14 12:37:28 | Message: asd | File: /var/www/html/src/Service/Auth/AuthSessionService.php | Line: 23
+
+2025-08-18 09:23:38 | 2025-08-18 09:23:38 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:23:41 | 2025-08-18 09:23:41 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:24:51 | 2025-08-18 09:24:51 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:28:04 | 2025-08-18 09:28:04 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:28:06 | 2025-08-18 09:28:06 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:28:11 | 2025-08-18 09:28:11 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:30:36 | 2025-08-18 09:30:36 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:34:09 | 2025-08-18 09:34:09 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 09:34:11 | 2025-08-18 09:34:11 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-08-18 12:12:28 | 2025-08-18 12:12:28 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+
+2025-09-10 11:48:55 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51
+2025-09-10 11:49:01 | Message: SQLSTATE[42703]: Undefined column: 7 ERROR:  column up.product_id does not exist
+LINE 1: SELECT * FROM orders up inner join products p ON up.product_...
+                                                         ^ | File: /var/www/html/src/Model/Order.php | Line: 51

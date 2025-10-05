@@ -49,7 +49,7 @@ class Productcontroller extends BaseController
 
         if ($this->authService->check()) {
 
-            $productsInCatalog = $this->productModel->getAllProducts();
+            $productsInCatalog = product::getAllProducts();
             require_once '../Views/catalog_page.php';
         } else {
             header('Location: /login');

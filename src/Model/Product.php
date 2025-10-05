@@ -11,9 +11,10 @@ class Product extends Model
     private int $price;
     private string $image_url;
 
-    public function getAllProducts(): array|null
+    public static function getAllProducts(): array|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()}");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->query("SELECT * FROM $tableName");
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $products = [];
         if ($results === false) {
@@ -32,12 +33,11 @@ class Product extends Model
         return $products;
     }
 
-    public function getProductById(int $productId):self|null
+    public static function getProductById(int $productId):self|null
 
     {
-
-
-        $stmtprod = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :product_id");
+        $tableName = static::getTableName();
+        $stmtprod = static::getPDO()->prepare("SELECT * FROM $tableName WHERE id = :product_id");
         $stmtprod->execute(['product_id' => $productId]);
         $result = $stmtprod->fetch(PDO::FETCH_ASSOC);
 
@@ -82,7 +82,7 @@ class Product extends Model
     }
 
 
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
        return 'products';
     }

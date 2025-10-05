@@ -85,16 +85,16 @@ public function getOrdersView()
 
         $userId = $this->authService->getCurrentUserId();
 
-        $userOrders = $this->orderModel->getAllByUserId($userId);
+        $userOrders = Order::getAllByUserId($userId);
         $newUserOrders = [];
         foreach ($userOrders as $userOrder) {
-            $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
+            $orderProducts = OrderProduct::getAllByOrderId($userOrder->getId());
 
             $newOrderProducts = [];
             $sum = 0;
             foreach ($orderProducts as $orderProduct) {
 
-                $product = $this->productModel->getProductById($orderProduct->getProductId());
+                $product = Product::getProductById($orderProduct->getProductId());
                 $orderProduct->setName($product->getName());
                 $orderProduct->setPrice($product->getPrice());
                 $totalSumForProduct = $orderProduct->getAmount() * $orderProduct->getPrice();

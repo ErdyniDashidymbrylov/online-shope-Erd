@@ -8,11 +8,11 @@ use Service\Auth\AuthCookieService;
 
 abstract class BaseController
 {
-    protected AuthSessionService $authSessionService;
+    /*protected AuthSessionService $authSessionService;
     public function __construct()
     {
         $this->authSessionService = new AuthSessionService();
-    }
+    }*/
 
 
 }

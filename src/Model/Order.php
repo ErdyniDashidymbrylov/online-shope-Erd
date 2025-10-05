@@ -32,9 +32,10 @@ class Order extends Model
     {
         return $this->total;
     }
-    public function create(string $name, string $phone, string $address, string $comment, int $userId)
+    public static function create(string $name, string $phone, string $address, string $comment, int $userId)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("INSERT INTO $tableName (
                     contact_name, phone, address, comment, user_id) VALUES (:contact_name, :phone, :address, :comment, :user_id) RETURNING id");
         $stmt->execute(['contact_name' => $name, 'phone' => $phone, 'address' => $address, 'comment' => $comment, 'user_id' => $userId]);
 
@@ -42,10 +43,11 @@ class Order extends Model
 
         return $data['id'];
     }
-    public function getAllByUserId(int $userId): array|null
+    public static function getAllByUserId(int $userId): array|null
     {
+        $tableName = static::getTableName();
 
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE user_id = :user_id");
+        $stmt = static::getPDO()->prepare("SELECT * FROM $tableName WHERE user_id = :user_id");
         $stmt->execute([':user_id' => $userId]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $orderProducts = [];
@@ -103,7 +105,7 @@ class Order extends Model
     }
 
 
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
        return 'orders';
     }

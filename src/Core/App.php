@@ -5,10 +5,23 @@ use Controllers\UserController;
 use Controllers\Productcontroller;
 use Controllers\OrderController;
 use Controllers\UserProductcontroller;
+use Model\Logs;
+use Service\LoggerService;
 
 
 class App
 {
+
+    private LoggerService $loggerService;
+    public function __construct()
+    {
+       $this->loggerService = new LoggerService();
+    }
+    public Logs $logsModel;
+   /* public function __construct()
+    {
+        $this->LogsModel = new Logs();
+    }*/
     private array $routes = [];
         /*'/registration' => [
             'GET' => [
@@ -119,17 +132,29 @@ class App
 
                 $class = $handler['class'];
                 $method = $handler['method'];
-                $requestClass  =$handler['request'];
+                $requestClass  = $handler['request'] ?? null;
                 $controller = new $class();
-                //require_once "../Controllers/$class.php";
 
-                if ($requestClass !== null) {
-                    $request = new $requestClass($_POST);
-                    $controller->$method($request);
+               try {
+                    if ($requestClass !== null) {
+                        $request = new $requestClass($_POST);
+                        $controller->$method($request);
+                    }
+                    else {
+                        $controller->$method();
+                    }
+
+
+                } catch (\Throwable $exception)
+                {
+                    $this->loggerService->logException($exception);
+
+                    //$this->LogsModel->insertLogs($message,$file,$line, date('Y-m-d H:i:s'));
                 }
-                else {
-                    $controller->$method();
-                }
+
+
+
+                //require_once "../Controllers/$class.php";
 
             } else {
                 echo "$requestMethod для адреса $requestUri не поддерживается!";

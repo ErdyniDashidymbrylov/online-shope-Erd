@@ -10,7 +10,7 @@ class Feedback extends Model
     private int $score;
     private string $date;
     private int $productId;
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
         return "feedbacks";
     }
@@ -19,9 +19,10 @@ class Feedback extends Model
         $this->productId = $productId;
     }
 
-    public function getAllFeedbacks(): array|null
+    public static function getAllFeedbacks(): array|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()}");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->query("SELECT * FROM $tableName");
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $feedbacks = [];
         if ($results === false) {
@@ -42,9 +43,10 @@ class Feedback extends Model
         return $feedbacks;
     }
 
-    public function insertFeedback(int $userId, string $comment, int $score, string $date, int $productId): void
+    public static function insertFeedback(int $userId, string $comment, int $score, string $date, int $productId): void
     {
-        $stmtInsert = $this->pdo->prepare("INSERT INTO {$this->getTablename()} (user_id, comment, score, date, product_id) VALUES (:user_id, :comment, :score, :date,:product_id)");
+        $tableName = static::getTableName();
+        $stmtInsert = static::getPDO()->prepare("INSERT INTO $tableName (user_id, comment, score, date, product_id) VALUES (:user_id, :comment, :score, :date,:product_id)");
         $stmtInsert->execute([':user_id' => $userId, ':comment' => $comment, ':score' => $score, ':date' => $date, ':product_id' => $productId]);
     }
 

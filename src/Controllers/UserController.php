@@ -55,9 +55,9 @@ class UserController extends BaseController
         $validationErrors = $request->validateRegistration();
         if (empty($validationErrors)) {
 
-            $insertUser = $this->userModel->insertUser($request->getName(),$request->getEmail(),$request->getPassword());
+            $insertUser = User::insertUser($request->getName(),$request->getEmail(),$request->getPassword());
 
-            $selectUser = $this->userModel->selectUser($request->getEmail());
+            $selectUser = User::selectUser($request->getEmail());
 
 
             $this->getLogin();
@@ -124,7 +124,7 @@ class UserController extends BaseController
 
         $userId = $this->authService->getCurrentUserId();
 
-        $user = $this->userModel->selectUserID($userId);
+        $user = User::selectUserID($userId);
 
         $validationErrors = $request->validateChangeProfile();
 
@@ -135,11 +135,11 @@ class UserController extends BaseController
 
 
             if ($user->getName() !== $name) {
-                $this->userModel->updateUser($name, $userId);
+                User::updateUser($name, $userId);
             }
 
             if ($user->getEmail() !== $email) {
-                $this->userModel->updateUser($email, $userId);
+                User::updateUser($email, $userId);
             }
 
             header("Location: /profile");
