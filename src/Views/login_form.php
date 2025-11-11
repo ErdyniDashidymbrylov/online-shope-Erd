@@ -1,21 +1,26 @@
-<div class="wrapper">
-    <form action="" method="POST" class="form-signin">
-        <h2 class="form-signin-heading">Пожалуйста, войдите</h2>
-        <input type="text" class="form-control" name="username" placeholder="Email адрес" required autofocus />
+<form action="" method="POST" class="form-signin">
+    <h2 class="form-signin-heading">Пожалуйста, войдите</h2>
 
-            <label style="color:red"><?php /*echo $errors['name']; */?></label>
-       <?php /*endif; */?>
-        <input type="password" class="form-control" name="password" placeholder="Пароль" required />
-       <!-- <?php /*if(!isset($errors['name'])): */?>
-            <label style="color:red"><?php /*echo $errors['password']; */?></label>
-        --><?php /*endif; */?>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Запомнить меня
-        </label>
+    <input type="text" class="form-control" name="username" placeholder="Email адрес" required autofocus />
+    <?php if (isset($errors['username'])): ?>
+        <div class="error"><?php echo $errors['username']; ?></div>
+    <?php endif; ?>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-    </form>
-</div>
+    <input type="password" class="form-control" name="password" placeholder="Пароль" required />
+    <?php if (isset($errors['password'])): ?>
+        <div class="error"><?php echo $errors['password']; ?></div>
+    <?php endif; ?>
+
+    <?php if (isset($errors['authorization'])): ?>
+        <div class="error"><?php echo $errors['authorization']; ?></div>
+    <?php endif; ?>
+
+    <label class="checkbox">
+        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Запомнить меня
+    </label>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+</form>
 
 <style>
     body {

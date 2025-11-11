@@ -47,6 +47,7 @@ echo "<p><a href='logout.php'>Выйти</a></p>";*/
     <p class="about">Вы находитесь на странице профиля</p>
     <a href=''><button class="btn">Написать письмо <?php echo $user->getEmail()?></button></a>
     <a href='/OrdersView'><button class="btn">Мои заказы </button></a>
+    <a href='/Recent_purchases'><button class="btn">Недавние покупки </button></a>
     <a href='/changeprofile'><button class="btn">Редактировать профиль</button></a>
     <a href='/logout'><button class="btn">Выйти</button></a>
 </div>

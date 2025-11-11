@@ -30,7 +30,7 @@
 
 
             </form>
-            <form action="/Decrease-product" method="POST">
+            <form action="/Decrease-product" method="POST" class="decrease-product-form" onsubmit="return false">
                 <div class="container">
                 <input type="hidden" name="product_id" id="product_id" value="<?php echo $product->getId(); ?>">
                     <label for="amount"><b></b></label>
@@ -52,7 +52,9 @@
             </form>
 
         <?php endforeach;?>
+
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
         <script>
             $(document).ready(function() {
                 $('.add-product-form').submit(function(event) {
@@ -72,6 +74,27 @@
                     });
                 });
             });
+
+            $(document).ready(function() {
+                $('.decrease-product-form').submit(function(event) {
+                    event.preventDefault();
+
+                    var form = $(this);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Decrease-product",
+                        data: form.serialize(),
+                        success: function(response) {
+                            console.log('Product decreased successfully.');
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error decreasing product:', error);
+                        }
+                    });
+                });
+            });
+
+
         </script>
 
         <style>

@@ -6,7 +6,7 @@ use Model\User;
 
 class AuthSessionService implements AuthInterface
 {
-    protected User $userModel;
+    protected User $userModel;//свойство user?
 
     public function __construct()
     {

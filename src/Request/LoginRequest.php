@@ -4,7 +4,7 @@ namespace Request;
 
 class LoginRequest
 {
-    public function __construct(private array $data)
+    public function __construct(private array $data) //добавить род класс
     {
     }
     public function getUserName(): string
@@ -16,7 +16,7 @@ class LoginRequest
         return $this->data['password'];
     }
 
-    public function validateName()
+    public function validate()
     {
         $errors = [];
         if (empty($this->data['username'])) {

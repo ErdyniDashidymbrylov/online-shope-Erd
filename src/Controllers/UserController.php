@@ -55,9 +55,9 @@ class UserController extends BaseController
         $validationErrors = $request->validateRegistration();
         if (empty($validationErrors)) {
 
-            $insertUser = User::insertUser($request->getName(),$request->getEmail(),$request->getPassword());
+            User::insertUser($request->getName(),$request->getEmail(),$request->getPassword());// статические методы?
 
-            $selectUser = User::selectUser($request->getEmail());
+            //User::selectUser($request->getEmail());
 
 
             $this->getLogin();
@@ -69,18 +69,16 @@ class UserController extends BaseController
         }
     }
 
-    public function getLogin()
+    public function getLogin(array $errors = [])
     {
         require_once '../Views/login_form.php';
     }
 
 
-
     public function postLogin(LoginRequest $request)
     {
 
-        $errors = $request->validateName();
-
+        $errors = $request->validate();
 
         if (empty($errors)) {
 
@@ -93,7 +91,7 @@ class UserController extends BaseController
                 $errors['autorization'] ='email или пароль неверный' ;
             }
         }
-        $this->getLogin();
+        $this->getLogin($errors); //выводить валидационные ошибки
 
     }
 

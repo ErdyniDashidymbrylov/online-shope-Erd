@@ -126,9 +126,48 @@ class App
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         if (isset($this->routes[$requestUri])) {
+            //login
             $routeMethods = $this->routes[$requestUri];
+            /*     echo "<pre>";
+            print_r($routeMethods);
+            echo "</pre>";
+            die();*/
+
+  /*          Array
+            (
+                [GET] => Array
+                (
+                    [class] => Controllers\UserController
+            [method] => getLogin
+            [request] =>
+        )
+
+    [POST] => Array
+            (
+                [class] => Controllers\UserController
+            [method] => postLogin
+            [request] => Request\LoginRequest
+        )
+
+
+)*/
+          //  $routeMethods =  routes['login']; // определить значение переменной при логине
             if (isset($routeMethods[$requestMethod])) {
                 $handler = $routeMethods[$requestMethod];
+               // $handler = $routeMethods[]; // определить значение переменной при логине
+
+             /*   echo "<pre>";
+                print_r($handler);
+                echo "</pre>";
+                die();*/
+
+ /*               Array
+                (
+                    [class] => Controllers\UserController
+                [method] => postLogin
+                [request] => Request\LoginRequest
+)*/
+
 
                 $class = $handler['class'];
                 $method = $handler['method'];

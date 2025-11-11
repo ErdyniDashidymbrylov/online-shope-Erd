@@ -6,6 +6,7 @@ use Controllers\UserProductcontroller;
 use Controllers\FeedbackController;
 use Core\App;
 use Core\Autoloader;
+use Controllers\RecentPurchasesController;
 
 //require_once '../Core/App.php';
 require_once './../Core/Autoloader.php';
@@ -13,7 +14,7 @@ require_once './../Core/Autoloader.php';
 /*$autoloader = new Autoloader;
 $autoloader->register();*/
 $path = dirname(__DIR__);
-    \Core\Autoloader::register($path);
+\Core\Autoloader::register($path);
 
 $app = new App();
 
@@ -48,6 +49,8 @@ $app->get('/Order',OrderController::class, 'getCheckoutForm');
 $app->post('/Order',OrderController::class, 'handleCheckoutForm',Request\OrderRequest::class);
 
 $app->get('/OrdersView',OrderController::class, 'getOrdersView');
+
+$app->get('/Recent_purchases',RecentPurchasesController::class, 'getRecentPurchases');
 
 $app->run();
 
